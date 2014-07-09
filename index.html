@@ -50,6 +50,9 @@ I felt the need to write <code>cuts</code>:</p>
 <a name="cuts-automatically-detects-the-file-input-column-delimiter" class="anchor" href="#cuts-automatically-detects-the-file-input-column-delimiter"><span class="octicon octicon-link"></span></a>
 <code>cuts</code> automatically detects the file input column delimiter:</h4>
 
+<p>In ~90% of common cases there's no need to pass the delimiter.
+The other ~10% are covered via supported options.</p>
+
 <pre><code>#
 # -- cut doesn't:
 #
@@ -68,12 +71,12 @@ $ cuts 0 test.dat
 </code></pre>
 
 <p>As you can see, <code>cuts</code> uses zero-based indexing
-(index 0 means 1st column) by default. </p>
+(index 0 means 1st column) by default.</p>
 
 <p>Accordingly, the examples below use 0-based indexing.</p>
 
 <p>If you prefer 1-based indexing, like <code>cut</code>, you may easily
-change the default either from the command line (<code>-0</code> option),
+change the default, either via the command line (<code>-0</code> option),
 or more permanently, via a small config file <code>~/.cuts.pl</code>,
 which is read early during runtime (details below).</p>
 
@@ -113,7 +116,7 @@ $ cuts 1 t.mixed
 # -- cut doesn't output columns side-by-side when reading from
 #    multiple input files, even though this is the most useful
 #    and expected thing to do.
-#    (It requires a separate utility like "paste")
+#    (Requiring a separate utility like "paste")
 #
 
 #
@@ -136,7 +139,7 @@ b
 Y
 
 #
-# -- cuts does automatic side-by-side printing:
+# -- cuts does automatic side-by-side printing, as expected:
 #
 $ cuts 1 t.tsv t.tsv
 1   1
@@ -148,8 +151,8 @@ Y   Y
 <a name="cuts-supports-multi-char-column-delimiters" class="anchor" href="#cuts-supports-multi-char-column-delimiters"><span class="octicon octicon-link"></span></a>
 <code>cuts</code> supports multi-char column delimiters</h4>
 
-<p>In particular, standard <code>cut</code> can't deal with the very
-common case of any white-space sequence:</p>
+<p>In particular, standard <code>cut</code> can't deal with the common case
+of any white-space sequence:</p>
 
 <pre><code>#
 # -- a file with variable length space-delimiters
@@ -167,7 +170,8 @@ $ cut -d' ' -f2 012.txt
 
 
 #
-# -- cuts does what makes sense:
+# -- cuts does what makes sense
+#    while not requiring explict user action:
 #
 $ cuts 1 012.txt
 1
@@ -177,11 +181,11 @@ $ cuts 1 012.txt
 
 <h4>
 <a name="cuts-supports-powerful-perl-style-regexp-delimiters" class="anchor" href="#cuts-supports-powerful-perl-style-regexp-delimiters"><span class="octicon octicon-link"></span></a>
-<code>cuts</code> supports powerful (perl style) regexp delimiters</h4>
+<code>cuts</code> supports powerful, perl style, regexp delimiters</h4>
 
 <p>When your delimiter is a bit more complex (say, any sequence of non-digits)
 and you have <code>cut</code>, you're out-of-luck. <code>cuts</code> fixes this by allowing you
-to specify any perl regular-expression (regexp) as the delimiter:</p>
+to specify any <code>perl</code> regular-expression (regexp) as the delimiter:</p>
 
 <pre><code>#
 # -- a file with numbers separated by mixed non-numeric chars
@@ -192,8 +196,8 @@ $ cat 012.regex
 0 aa 1 bbbbbbb 2
 
 #
-# -- cuts accepts perl regexps for delimiters
-#    in this case, we set delimiter regexp to any sequence of non-digits
+# -- cuts accepts perl regexps for input delimiters
+#    in this case, we set the delimiter regexp to "any sequence of non-digits"
 #
 $ cuts -d '[^0-9]+' 1 012.regex
 1
@@ -203,11 +207,11 @@ $ cuts -d '[^0-9]+' 1 012.regex
 
 <h4>
 <a name="cuts-supports-negative-from-end-column-numbers" class="anchor" href="#cuts-supports-negative-from-end-column-numbers"><span class="octicon octicon-link"></span></a>
-<code>cuts</code> supports negative (from end) column numbers</h4>
+<code>cuts</code> supports negative (from-end) column numbers</h4>
 
-<p>This is very useful when you have, say, 257 fields (but you haven't counted
+<p>This is useful when you have, say, 257 fields (but you haven't counted
 them, so you don't really know), and you're interested in the last field,
-or the one before the last etc.  <code>cuts</code> supports negative offsets
+or the one before the last, etc.  <code>cuts</code> supports negative offsets
 from the end:</p>
 
 <pre><code>#
@@ -238,7 +242,7 @@ $ cut -f3,2,1 file.tsv
 #
 # -- cuts does exactly what you ask it to:
 #
-$ cuts 2 1 0 file.tsv 
+$ cuts 2 1 0 file.tsv
 2   1   0
 2   1   0
 2   1   0
@@ -271,21 +275,22 @@ phone-number
 </code></pre>
 
 <h4>
-<a name="cuts-is-forgiving-if-you-accidentally-use--t-like-sort-does" class="anchor" href="#cuts-is-forgiving-if-you-accidentally-use--t-like-sort-does"><span class="octicon octicon-link"></span></a>
-<code>cuts</code> is forgiving if you accidentally use <code>-t</code> (like <code>sort</code> does)</h4>
+<a name="cuts-forgives-you-if-you-accidentally-use--t-like-sort-does" class="anchor" href="#cuts-forgives-you-if-you-accidentally-use--t-like-sort-does"><span class="octicon octicon-link"></span></a>
+<code>cuts</code> forgives you if you accidentally use <code>-t</code> (like <code>sort</code> does)</h4>
 
 <p>It is unfortunate that the Unix toolset is so inconsistent in the
 choice of option-letters.  <code>cuts</code> solves this by allowing 'any of
-the above'. So if you accidentally use <code>-s</code> instead of <code>-d</code> because
-you think "separator" instead of "delimiter" - it still works
-(and <code>-t</code>, which is used by <code>sort</code>, works just as well).</p>
+the above' in these cases. So if you accidentally use <code>-s</code> instead of
+<code>-d</code> because you think "separator" instead of "delimiter", or <code>-t</code>
+instead of <code>-d</code> because you have the <code>sort</code> convention in your head,
+<code>cuts</code> still works as you expect it to.</p>
 
 <h4>
 <a name="cuts-requires-minimal-typing-for-simple-column-extraction-tasks" class="anchor" href="#cuts-requires-minimal-typing-for-simple-column-extraction-tasks"><span class="octicon octicon-link"></span></a>
 <code>cuts</code> requires minimal typing for simple column extraction tasks</h4>
 
-<p><code>cut</code> is harder to use, and less friendly because it doesn't support
-reasonable defaults. For example:</p>
+<p><code>cut</code> is harder to use, and somewhat less friendly because it doesn't
+support reasonable defaults. For example:</p>
 
 <pre><code>#
 # -- `cut` errors when arguments are missing:
@@ -314,20 +319,30 @@ $ cuts example.csv
 <pre><code>    $ paste &lt;(cut -d, -f1 file.csv) &lt;(cut -d"&lt;TAB&gt;" -f2 file.tsv)
 </code></pre>
 
-<p>but that requires too much typing (3 commands &amp; shell-magic),
-while still not supporting regexp-style delimiters and offsets from end.</p>
+<p>but that requires too much typing (3 commands, using SHIFTs on the
+keyboard, &amp; shell-magic), while still not supporting regexp-style
+delimiters and offsets from end.</p>
 
-<p>Compare the above to the much simpler, and more intuitive, <code>cuts</code> version,
+<p>Compare the above to the simpler, and more intuitive, <code>cuts</code> version,
 which works right out of the box, in any shell:</p>
 
-<pre><code>$ cat file.tsv
+<pre><code>#
+# -- example input:
+#
+$ cat file.tsv
 0   1   2
 a   b   c
 
+#
+# -- another example input, but with different delimiters
+#
 $ cat file.csv
 0,1,2
 a,b,c
 
+# -- "cuts" does exactly what you ask it to,
+#    both slicing and joining as expected.
+#
 $ cuts file.csv 0 file.tsv 1
 0   1
 a   b
@@ -337,7 +352,10 @@ a   b
 <a name="cuts-supports-reverse-ranges-and-range-wrap-arounds" class="anchor" href="#cuts-supports-reverse-ranges-and-range-wrap-arounds"><span class="octicon octicon-link"></span></a>
 <code>cuts</code> supports reverse-ranges and range wrap-arounds</h4>
 
-<pre><code>$ cat 1-20-wide.csv
+<pre><code>#
+# -- example input with variable number of columns
+#
+$ cat 1-20-wide.csv
 0,1,2,3,4,5,6,7,8,9,10
 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20
@@ -368,11 +386,11 @@ $ cuts -1-2 1-20-wide.csv
 
 </code></pre>
 
-<p>Other utilities, like <code>awk</code> or <code>perl</code> give you more power at the expense
-of having to learn a much more complex language to do what you want.</p>
+<p>Other utilities, like <code>awk</code> or <code>perl</code> give you more power, at the expense
+of having to learn a more complex language, to do what you want.</p>
 
 <p><code>cuts</code> is designed to give you the power you need in almost all cases,
-while always being able to stay on the command line and keeping
+while always being able to stay on the command line, and keeping
 the human interface <em>as simple and minimalist as possible</em></p>
 
 <p><code>cuts</code> arguments can be:</p>
@@ -394,16 +412,16 @@ cuts.</p>
 <h3>
 <a name="reasonable-defaults-for-everything" class="anchor" href="#reasonable-defaults-for-everything"><span class="octicon octicon-link"></span></a>Reasonable defaults for everything</h3>
 
+<p>An unspecified file-name will default to <code>/dev/stdin</code>
+so you can easily pipe any other command output into <code>cuts</code>.</p>
+
+<p>An unspecified column-number will default to the 1st column (0)</p>
+
 <p>A file-name without a column-number will cause the <em>last</em> specified
 column-number to be reused.</p>
 
 <p>A column-number without a file-name will cause the <em>last</em> specified
 file-name to be reused.</p>
-
-<p>An unspecified column-number will default to the 1st column (0)</p>
-
-<p>An unspecified file-name will default to <code>/dev/stdin</code>so you can easily pipe
-any other command output into <code>cuts</code>.</p>
 
 <p>By default, the input column delimiter is the most common case of
 any-sequence of white-space <em>or</em> a comma, optionally surrounded by
@@ -498,16 +516,15 @@ Usage: cuts [Options] [Column_Specs]...
     Options:
         -v              verbose (mostly for debugging)
         -0              Don't use the default 0-based indexing, use 1-based
+        -c              Don't use personal config-file (even if exists)
 
-        Input column delimiter options (lowercase):
-        -d &lt;sep&gt;        Use &lt;sep&gt; (perl regexp) as column delimiter
-        -t &lt;sep&gt;        Alias for -d
-        -s &lt;sep&gt;        Another alias for -d
+        Input column separator options (lowercase):
+          -d &lt;sep&gt;      Use &lt;sep&gt; (perl regexp) as input column delimiter
+          -t/-s &lt;sep&gt;   Handy aliases for -d
 
-        Output column delimiter options (uppercase of same):
-        -D &lt;sep&gt;
-        -T &lt;sep&gt;
-        -S &lt;sep&gt;
+        Output column separator options (mnemonic: uppercase of same):
+          -D &lt;sep&gt;      Use &lt;sep&gt; (string) as output column delimiter
+          -T/-S &lt;sep&gt;   Handy aliases for -D
 
     Column_Specs:
         filename:colno  Extract colno from filename
@@ -547,7 +564,7 @@ Usage: cuts [Options] [Column_Specs]...
 <a name="further-configuration--customization" class="anchor" href="#further-configuration--customization"><span class="octicon octicon-link"></span></a>Further configuration &amp; customization</h2>
 
 <p>If you don't like <code>cuts</code> defaults, you can override them in
-an optional personal configuration ~/.cuts.pl</p>
+an optional personal configuration file: <code>~/.cuts.pl</code></p>
 
 <p>If this file exists, cuts will read it during startup allowing you
 override cuts default parameters, in particular the value of
@@ -559,10 +576,17 @@ file is perl:</p>
     #    This is a mnemonic: the -0 option means "disable 0-based".
     our $opt_0 = 0;
 
+    # -- Default column to select, when unspecified
+    our $DefaultColno = 0;
+
     # -- Alternative file:colno char separators
     our $FCsep = ':%#';
 
-    # -- Default input column separator (smart)
+    # -- Default input column separator
+    #    Smart matching of: CSV[+optional-spaces] / TSV / other-white-space
+    #
+    #    For quoted CSV/TSV/SSV, you may try: -d '^"|"[, \t]"|"$'
+    #    Also, see examples in the test-suite
     our $ICS = '(?:\s*,\s*|\s+)';
 
     # -- Default output column separator
