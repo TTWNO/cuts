@@ -1,9 +1,8 @@
-#include <catch2/catch.hpp>
-#include "functions.h"
 #include <iostream>
 #include <string>
 #include <vector>
 #include <tuple>
+#include <algorithm>
 
 using namespace std;
 
@@ -13,47 +12,55 @@ tuple<int, int> convert_negative_fields(tuple<int, int> negInts, int sizeOf){
 }
 
 vector<string> delimit_line(string str, string delimiter){
-	vector<string> delimitedString;
+	vector<string> delimited_string;
 	size_t pos = 0;
 	string token;
 	while ((pos = str.find(delimiter)) != string::npos){
 		token = str.substr(0, pos);
-		delimitedString.push_back(token);
+		delimited_string.push_back(token);
 		str.erase(0, pos + delimiter.length());
 	}
 	// Due to the str.erase(), the remaining string contains the last bit of delimited text.
-	delimitedString.push_back(str);
-	return delimitedString;
+	delimited_string.push_back(str);
+	return delimited_string;
 }
 
-vector<string> get_fields(vector<string> delimitedStr, tuple<int, int> startAndEnd){
+vector<string> get_fields(vector<string> ds, tuple<int, int> startAndEnd){
 	int start, end;
 	tie(start, end) = startAndEnd;
 	if (start < 0 || end < 0){
-		tie(start, end) = convert_negative_fields(startAndEnd, delimitedStr.size());
+		tie(start, end) = convert_negative_fields(startAndEnd, ds.size());
 	}
-	vector<string> fields;
+	vector<string> fielded;
 	if (start > end){
-		for (int i = delimitedStr.size()-1; i >= 0; i--){
+		for (int i = ds.size()-1; i >= 0; i--){
 			if (i <= start && i >= end){
-			
-			fields.push_back(delimitedStr.at(i));
-		}}
-	}
-	else{
-	for(int i = 0; i < delimitedStr.size(); i++){
-		if (i >= start && i <= end){
-			fields.push_back(delimitedStr.at(i));
+				fielded.push_back(ds.at(i));
+			}
 		}
-	}}
-	return fields;
+	}else{
+		for(int i = 0; i < ds.size(); i++){
+			if (i >= start && i <= end){
+				fielded.push_back(ds.at(i));
+			}
+		}
+	}
+	return fielded;
 }
 
 vector<vector<string>> delimit_multiline(string str, string delimiter){
-	vector<vector<string>> delimitedString;
+	vector<vector<string>> delimited_string;
 	vector<string> lines = delimit_line(str, "\n");
 	for (string line : lines){
-		delimitedString.push_back(delimit_line(line, delimiter));
+		delimited_string.push_back(delimit_line(line, delimiter));
 	}
-	return delimitedString;
+	return delimited_string;
+}
+
+vector<vector<string>> get_multiline_fields(vector<vector<string>> dms, tuple<int, int> fields){
+	vector<vector<string>> fielded_multiline;
+	for (vector<string> deline : dms){
+		fielded_multiline.push_back(get_fields(deline, fields));
+	}
+	return fielded_multiline;
 }

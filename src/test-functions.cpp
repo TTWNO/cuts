@@ -48,6 +48,12 @@ const vector<vector<string>> MULTILINE_OUTPUT1 = {
 	{"Test1", "Test2"},
 	{"Test3", "Test4"}
 };
+const tuple<int, int> MULTILINE_FIELDS1 = make_tuple(0, 0);
+const vector<vector<string>> MULTILINE_OUTPUT1_FIELDED = {
+	{"Test1"},
+	{"Test3"}
+};
+
 
 TEST_CASE("convert_negative_fields() tests.", "[convert_negative_fields]"){
 	REQUIRE(convert_negative_fields(NEG_FIELDS1, FIELDS_SIZE1) == POS_FIELDS1);
@@ -80,4 +86,7 @@ TEST_CASE("get_fields() tests w/ negative ints w/ incorrect ordering", "[get_fie
 }
 TEST_CASE("delimit_multiline_string() tests.", "[delimit_multiline_string]"){
 	REQUIRE(delimit_multiline(MULTILINE_INPUT1, MULTILINE_DEL1) == MULTILINE_OUTPUT1);
+}
+TEST_CASE("get_multiline_fields() tests.", "[get_multiline_fields]"){
+	REQUIRE(get_multiline_fields(MULTILINE_OUTPUT1, MULTILINE_FIELDS1) == MULTILINE_OUTPUT1_FIELDED);
 }
