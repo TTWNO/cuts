@@ -55,7 +55,7 @@ const vector<vector<string>> MULTILINE_OUTPUT1_FIELDED = {
 };
 
 
-const string FILE1_NAME = "test_file1.txt";
+const string FILE1_NAME = "tests/test_file1.txt";
 const string FILE1_TEXT = "I, Tait, am getting old.\nPlease, I beg, take care of my children.";
 const vector<vector<string>> FILE1_OUTPUT = {
 	{"I", " Tait", " am getting old."},
