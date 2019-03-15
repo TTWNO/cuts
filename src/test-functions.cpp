@@ -55,6 +55,13 @@ const vector<vector<string>> MULTILINE_OUTPUT1_FIELDED = {
 };
 
 
+const string FILE1_NAME = "test_file1.txt";
+const string FILE1_TEXT = "I, Tait, am getting old.\nPlease, I beg, take care of my children.";
+const vector<vector<string>> FILE1_OUTPUT = {
+	{"I", " Tait", " am getting old."},
+	{"Please", " I beg", " take care of my children."}
+};
+
 TEST_CASE("convert_negative_fields() tests.", "[convert_negative_fields]"){
 	REQUIRE(convert_negative_fields(NEG_FIELDS1, FIELDS_SIZE1) == POS_FIELDS1);
 	REQUIRE(convert_negative_fields(NEG_FIELDS2, FIELDS_SIZE2) == POS_FIELDS2);
@@ -86,7 +93,12 @@ TEST_CASE("get_fields() tests w/ negative ints w/ incorrect ordering", "[get_fie
 }
 TEST_CASE("delimit_multiline_string() tests.", "[delimit_multiline_string]"){
 	REQUIRE(delimit_multiline(MULTILINE_INPUT1, MULTILINE_DEL1) == MULTILINE_OUTPUT1);
+	REQUIRE(delimit_multiline(FILE1_TEXT, ",") == FILE1_OUTPUT);
 }
 TEST_CASE("get_multiline_fields() tests.", "[get_multiline_fields]"){
 	REQUIRE(get_multiline_fields(MULTILINE_OUTPUT1, MULTILINE_FIELDS1) == MULTILINE_OUTPUT1_FIELDED);
+}
+
+TEST_CASE("get_file_contents() tests.", "[get_file_contents]"){
+	REQUIRE(get_file_contents(FILE1_NAME) == FILE1_TEXT);
 }

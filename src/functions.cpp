@@ -3,6 +3,7 @@
 #include <vector>
 #include <tuple>
 #include <algorithm>
+#include <fstream>
 
 using namespace std;
 
@@ -63,4 +64,13 @@ vector<vector<string>> get_multiline_fields(vector<vector<string>> dms, tuple<in
 		fielded_multiline.push_back(get_fields(deline, fields));
 	}
 	return fielded_multiline;
+}
+
+string get_file_contents(string filename){
+	ifstream ifs(filename);
+	string content;
+	content.assign(
+			(istreambuf_iterator<char>(ifs)),
+			(istreambuf_iterator<char>()));
+	return content;
 }
