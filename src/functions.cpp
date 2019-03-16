@@ -5,6 +5,8 @@
 #include <algorithm>
 #include <regex>
 #include <fstream>
+#include <unistd.h>
+#include <sys/stat.h>
 
 using namespace std;
 
@@ -65,6 +67,11 @@ vector<vector<string>> get_multiline_fields(vector<vector<string>> dms, tuple<in
 		fielded_multiline.push_back(get_fields(deline, fields));
 	}
 	return fielded_multiline;
+}
+
+bool file_exists(const string& filename){
+	struct stat buffer;
+	return (stat (filename.c_str(), &buffer) == 0);
 }
 
 string get_file_contents(string filename){

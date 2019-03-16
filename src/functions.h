@@ -16,5 +16,6 @@ vector<string> get_fields(vector<string> ds, tuple<int, int> startAndEnd);
 
 vector<vector<string>> delimit_multiline(string str, string delimiter);
 vector<vector<string>> get_multiline_fields(vector<vector<string>> dms, tuple<int, int> fields);
+bool file_exists(const string &filename);
 string get_file_contents(string filename);
 vector<string> delimit_string_regex(string str, regex re);

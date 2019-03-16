@@ -78,40 +78,51 @@ const string REGEX_INPUT3 = "...the decision can be made by people [...] of 18 y
 const regex REGEX_INPUT3_REGEX ("(\\s\\[)?\\.{3}(\\]\\s)?");
 const vector<string> REGEX_OUTPUT3 = {"", "the decition can be made by people of", "18 years and over", ""};
 
+const string FAKE_FILENAME = "superlongstupidfilename_whywouldanyonehavethisfilename.russia.zip.txt.org.co.uk.gov";
 
 TEST_CASE("convert_negative_fields() tests.", "[convert_negative_fields]"){
 	REQUIRE(convert_negative_fields(NEG_FIELDS1, FIELDS_SIZE1) == POS_FIELDS1);
 	REQUIRE(convert_negative_fields(NEG_FIELDS2, FIELDS_SIZE2) == POS_FIELDS2);
 }
+
 TEST_CASE("convert_negative_fields() tests with overly negative integers", "[convert_negative_fields]"){
 	REQUIRE(convert_negative_fields(NEG_FIELDS3, FIELDS_SIZE3) == POS_FIELDS3);
 }
+
 TEST_CASE("delimit_line() single character tests.", "[delimit_line]"){
 	REQUIRE(delimit_line(INPUT1, DEL1) == OUTPUT1);
 }
+
 TEST_CASE("delimit_line() multi character tests.", "[delimit_line]"){
 	REQUIRE(delimit_line(INPUT2, DEL2) == OUTPUT2);
 }
+
 TEST_CASE("delimit_line() multi character hanging tests.", "[delimit_line]"){
 	REQUIRE(delimit_line(INPUT3, DEL3) == OUTPUT3);
 }
+
 TEST_CASE("delimit_line() single character hanging tests.", "[delimit_line]"){
 	REQUIRE(delimit_line(INPUT4, DEL4) == OUTPUT4);
 }
+
 TEST_CASE("get_fields() tests.", "[get_fields]"){
 	REQUIRE(get_fields(delimit_line(INPUT4, DEL4), F_INPUT4_1_INDEXES) == F_OUTPUT4);
 	REQUIRE(get_fields(delimit_line(INPUT4, DEL4), F_INPUT4_2_INDEXES) == F_OUTPUT4_2);
 }
+
 TEST_CASE("get_fields() tests w/ negative ints", "[get_fields]"){
 	REQUIRE(get_fields(delimit_line(INPUT4, DEL4), F_INPUT4_3_INDEXES) == F_OUTPUT4_3);
 }
+
 TEST_CASE("get_fields() tests w/ negative ints w/ incorrect ordering", "[get_fields]"){
 	REQUIRE(get_fields(delimit_line(INPUT4, DEL4), F_INPUT4_4_INDEXES) == F_OUTPUT4_4);
 }
+
 TEST_CASE("delimit_multiline_string() tests.", "[delimit_multiline_string]"){
 	REQUIRE(delimit_multiline(MULTILINE_INPUT1, MULTILINE_DEL1) == MULTILINE_OUTPUT1);
 	REQUIRE(delimit_multiline(FILE1_TEXT, ",") == FILE1_OUTPUT);
 }
+
 TEST_CASE("get_multiline_fields() tests.", "[get_multiline_fields]"){
 	REQUIRE(get_multiline_fields(MULTILINE_OUTPUT1, MULTILINE_FIELDS1) == MULTILINE_OUTPUT1_FIELDED);
 }
@@ -119,8 +130,14 @@ TEST_CASE("get_multiline_fields() tests.", "[get_multiline_fields]"){
 TEST_CASE("get_file_contents() tests.", "[get_file_contents]"){
 	REQUIRE(get_file_contents(FILE1_NAME) == FILE1_TEXT);
 }
+
 TEST_CASE("delimit_string_regex() tests.", "[delimit_string_regex]"){
 	REQUIRE(delimit_string_regex(REGEX_INPUT1, REGEX_INPUT1_REGEX) == REGEX_OUTPUT1);
 	REQUIRE(delimit_string_regex(REGEX_INPUT1, REGEX_INPUT1_REGEX2) == REGEX_OUTPUT1_REGEX2);
 	REQUIRE(delimit_string_regex(REGEX_INPUT2, REGEX_INPUT2_REGEX) == REGEX_OUTPUT2);
+}
+
+TEST_CASE("file_exists() tests.", "[file_exists]"){
+	REQUIRE(file_exists(FILE1_NAME) == true);
+	REQUIRE(file_exists(FAKE_FILENAME) == false);
 }
