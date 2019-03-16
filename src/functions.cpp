@@ -1,17 +1,24 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include <tuple>
 #include <algorithm>
 #include <regex>
 #include <fstream>
 #include <unistd.h>
 #include <sys/stat.h>
+#include <stdexcept>
 
 using namespace std;
 
-tuple<int, int> convert_negative_fields(tuple<int, int> negInts, int sizeOf){
-	tuple<int, int> converted_fields = make_tuple(get<0>(negInts) + sizeOf, get<1>(negInts) + sizeOf);
+vector<int> convert_negative_fields(vector<int> negCols, int sizeOf){
+	vector<int> converted_fields;
+	for (int col : negCols){
+		if (col < 0){
+			converted_fields.push_back(col + sizeOf);
+		} else {
+			converted_fields.push_back(col);
+		}
+	}
 	return converted_fields;
 }
 
@@ -29,27 +36,18 @@ vector<string> delimit_string(string str, string delimiter){
 	return delimited_string;
 }
 
-vector<string> get_fields(vector<string> ds, tuple<int, int> startAndEnd){
-	int start, end;
-	tie(start, end) = startAndEnd;
-	if (start < 0 || end < 0){
-		tie(start, end) = convert_negative_fields(startAndEnd, ds.size());
-	}
-	vector<string> fielded;
-	if (start > end){
-		for (int i = ds.size()-1; i >= 0; i--){
-			if (i <= start && i >= end){
-				fielded.push_back(ds.at(i));
-			}
+vector<string> get_fields(vector<string> ds, vector<int> cols){
+	vector<string> filtered_cols;
+	for (int col : cols)
+	{
+		if (col < 0){
+			throw invalid_argument("Column cannot be begative.");
+		} else if (col > ds.size()-1){
+			throw invalid_argument("Column cannot be longer than the columns to choose from.");
 		}
-	}else{
-		for(int i = 0; i < ds.size(); i++){
-			if (i >= start && i <= end){
-				fielded.push_back(ds.at(i));
-			}
-		}
+		filtered_cols.push_back(ds.at(col));
 	}
-	return fielded;
+	return filtered_cols;
 }
 
 vector<vector<string>> delimit_multiline(string str, string delimiter){
@@ -61,10 +59,10 @@ vector<vector<string>> delimit_multiline(string str, string delimiter){
 	return delimited_string;
 }
 
-vector<vector<string>> get_multiline_fields(vector<vector<string>> dms, tuple<int, int> fields){
+vector<vector<string>> get_multiline_fields(vector<vector<string>> dms, vector<int> cols){
 	vector<vector<string>> fielded_multiline;
 	for (vector<string> deline : dms){
-		fielded_multiline.push_back(get_fields(deline, fields));
+		fielded_multiline.push_back(get_fields(deline, cols));
 	}
 	return fielded_multiline;
 }

@@ -18,26 +18,26 @@ const vector<string> OUTPUT3 = {"Test1", "Test2", "Test3", ""};
 const string INPUT4="Test7,Test8,Test9,";
 const string DEL4=",";
 const vector<string> OUTPUT4 = {"Test7", "Test8", "Test9", ""};
-const tuple<int, int> F_INPUT4_1_INDEXES = make_tuple(0, 2);
+const vector<int> F_INPUT4_1_INDEXES = {0, 1, 2};
 const vector<string> F_OUTPUT4 = {"Test7", "Test8", "Test9"};
-const tuple<int, int> F_INPUT4_2_INDEXES = make_tuple(1, 1);
+const vector<int> F_INPUT4_2_INDEXES = {1};
 const vector<string> F_OUTPUT4_2 = {"Test8"};
-const tuple<int, int> F_INPUT4_3_INDEXES = make_tuple(-3, -2);
+const vector<int> F_INPUT4_3_INDEXES = {-3, -2};
 const vector<string> F_OUTPUT4_3 = {"Test8", "Test9"};
-const tuple<int, int> F_INPUT4_4_INDEXES = make_tuple(-2, -3);
+const vector<int> F_INPUT4_4_INDEXES = {-2, -3};
 const vector<string> F_OUTPUT4_4 = {"Test9", "Test8"};
 
-const tuple<int, int> NEG_FIELDS1 = make_tuple(-1, -3);
+const vector<int> NEG_FIELDS1 = {-1, -3};
 const int FIELDS_SIZE1 = 15;
-const tuple<int, int> POS_FIELDS1 = make_tuple(14, 12);
+const vector<int> POS_FIELDS1 = {14, 12};
 
-const tuple<int, int> NEG_FIELDS2 = make_tuple(-12, -2);
+const vector<int> NEG_FIELDS2 = {-12, -2};
 const int FIELDS_SIZE2 = 13;
-const tuple<int, int> POS_FIELDS2 = make_tuple(1, 11);
+const vector<int> POS_FIELDS2 = {1, 11};
 
-const tuple<int, int> NEG_FIELDS3 = make_tuple(-5, -2);
+const vector<int> NEG_FIELDS3 = {-5, -2};
 const int FIELDS_SIZE3 = 4;
-const tuple<int, int> POS_FIELDS3 = make_tuple(-1, 2);
+const vector<int> POS_FIELDS3 = {-1, 2};
 
 const string MULTILINE_INPUT1 = "Test1,Test2\nTest3,Test4";
 const string MULTILINE_DEL1 = ",";
@@ -45,7 +45,7 @@ const vector<vector<string>> MULTILINE_OUTPUT1 = {
 	{"Test1", "Test2"},
 	{"Test3", "Test4"}
 };
-const tuple<int, int> MULTILINE_FIELDS1 = make_tuple(0, 0);
+const vector<int> MULTILINE_FIELDS1 = {0};
 const vector<vector<string>> MULTILINE_OUTPUT1_FIELDED = {
 	{"Test1"},
 	{"Test3"}
@@ -80,6 +80,29 @@ const vector<string> REGEX_OUTPUT3 = {"", "the decition can be made by people of
 
 const string FAKE_FILENAME = "superlongstupidfilename_whywouldanyonehavethisfilename.russia.zip.txt.org.co.uk.gov";
 
+const string COLS1_SELECT = "0-5";
+const string COLS2_SELECT = "1,2,6";
+const string COLS3_SELECT = "1,5-7";
+const string COLS4_SELECT = "7-5,0-1";
+
+const vector<int> COLS1_VECTOR = {1, 2, 3, 4, 5};
+const vector<int> COLS2_VECTOR = {1, 2, 6};
+const vector<int> COLS3_VECTOR = {1, 5, 6, 7};
+const vector<int> COLS4_VECTOR = {7, 6, 5, 1};
+
+const string COLS1_STRING = "What are you looking for?";
+const vector<string> COLS1_DELIMITED = {"What", "are", "you", "looking", "for?"};
+
+const string COLS2_STRING = "I am looking for a good time. A very good time.";
+const vector<string> COLS2_DELIMITED = {"am", "looking", "time."};
+
+const string COLS3_STRING = "Then why don't you do something already? Coward!";
+const vector<string> COLS3_DELIMITED = {"why", "something", "already?", "Coward!"};
+
+const string COLS4_STRING = "Because I'm scared of rejection. Silly girl!";
+const vector<string> COLS4_DELIMITED = {"girl!", "silly", "rejection.", "Because", "I'm"};
+
+
 TEST_CASE("convert_negative_fields() tests.", "[convert_negative_fields]"){
 	REQUIRE(convert_negative_fields(NEG_FIELDS1, FIELDS_SIZE1) == POS_FIELDS1);
 	REQUIRE(convert_negative_fields(NEG_FIELDS2, FIELDS_SIZE2) == POS_FIELDS2);
@@ -111,11 +134,11 @@ TEST_CASE("get_fields() tests.", "[get_fields]"){
 }
 
 TEST_CASE("get_fields() tests w/ negative ints", "[get_fields]"){
-	REQUIRE(get_fields(delimit_string(INPUT4, DEL4), F_INPUT4_3_INDEXES) == F_OUTPUT4_3);
+	REQUIRE(get_fields(delimit_string(INPUT4, DEL4), convert_negative_fields(F_INPUT4_3_INDEXES, OUTPUT4.size())) == F_OUTPUT4_3);
 }
 
 TEST_CASE("get_fields() tests w/ negative ints w/ incorrect ordering", "[get_fields]"){
-	REQUIRE(get_fields(delimit_string(INPUT4, DEL4), F_INPUT4_4_INDEXES) == F_OUTPUT4_4);
+	REQUIRE(get_fields(delimit_string(INPUT4, DEL4), convert_negative_fields(F_INPUT4_4_INDEXES, OUTPUT4.size())) == F_OUTPUT4_4);
 }
 
 TEST_CASE("delimit_multiline_string() tests.", "[delimit_multiline_string]"){
