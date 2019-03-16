@@ -3,6 +3,7 @@
 #include <vector>
 #include <tuple>
 #include <algorithm>
+#include <regex>
 #include <fstream>
 
 using namespace std;
@@ -73,4 +74,17 @@ string get_file_contents(string filename){
 			(istreambuf_iterator<char>(ifs)),
 			(istreambuf_iterator<char>()));
 	return content;
+}
+
+vector<string> delimit_string_regex(string str, regex re){
+	smatch match;
+	vector<string> delimited_by_regex;
+	while(regex_search(str, match, re)){
+		delimited_by_regex.push_back(match.prefix());
+		str = match.suffix().str();
+	}
+	if (str != ""){
+		delimited_by_regex.push_back(str);
+	}
+	return delimited_by_regex;
 }

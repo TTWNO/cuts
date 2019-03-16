@@ -59,6 +59,26 @@ const vector<vector<string>> FILE1_OUTPUT = {
 	{"Please", " I beg", " take care of my children."}
 };
 
+const string REGEX_INPUT1 = "Hello, my name is Fernando. Please see to it that my, may I say quite exquisite, horses are attended to.";
+// This regex finds any comma or period followed by 0 or 1 spaces.
+const regex REGEX_INPUT1_REGEX ("[,.] ?");
+const vector<string> REGEX_OUTPUT1 = {"Hello", "my name is Fernando", "Please see to it that my", "may I say quite exquisite", "horses are attended to"};
+
+// This regex finds any alphabet characters with 2 or more in sequential order.
+const regex REGEX_INPUT1_REGEX2 ("([A-Za-z])\\1+");
+const vector<string> REGEX_OUTPUT1_REGEX2 = {"He", "o, my name is Fernando. Please s", " to it that my, may I say quite exquisite, horses are a", "ended to."};
+
+const string REGEX_INPUT2 = "I. am. not. pleased.";
+// This regex find any period followed by one or zero spaces.
+const regex REGEX_INPUT2_REGEX ("[.] ?");
+const vector<string> REGEX_OUTPUT2 = {"I", "am", "not", "pleased"};
+
+const string REGEX_INPUT3 = "...the decision can be made by people [...] of 18 years or over...";
+// This regex will find any set of 3 periods that optionally have either ' [' preceeding, or '] ' secceeding.
+const regex REGEX_INPUT3_REGEX ("(\\s\\[)?\\.{3}(\\]\\s)?");
+const vector<string> REGEX_OUTPUT3 = {"", "the decition can be made by people of", "18 years and over", ""};
+
+
 TEST_CASE("convert_negative_fields() tests.", "[convert_negative_fields]"){
 	REQUIRE(convert_negative_fields(NEG_FIELDS1, FIELDS_SIZE1) == POS_FIELDS1);
 	REQUIRE(convert_negative_fields(NEG_FIELDS2, FIELDS_SIZE2) == POS_FIELDS2);
@@ -98,4 +118,9 @@ TEST_CASE("get_multiline_fields() tests.", "[get_multiline_fields]"){
 
 TEST_CASE("get_file_contents() tests.", "[get_file_contents]"){
 	REQUIRE(get_file_contents(FILE1_NAME) == FILE1_TEXT);
+}
+TEST_CASE("delimit_string_regex() tests.", "[delimit_string_regex]"){
+	REQUIRE(delimit_string_regex(REGEX_INPUT1, REGEX_INPUT1_REGEX) == REGEX_OUTPUT1);
+	REQUIRE(delimit_string_regex(REGEX_INPUT1, REGEX_INPUT1_REGEX2) == REGEX_OUTPUT1_REGEX2);
+	REQUIRE(delimit_string_regex(REGEX_INPUT2, REGEX_INPUT2_REGEX) == REGEX_OUTPUT2);
 }
