@@ -15,7 +15,7 @@ tuple<int, int> convert_negative_fields(tuple<int, int> negInts, int sizeOf){
 	return converted_fields;
 }
 
-vector<string> delimit_line(string str, string delimiter){
+vector<string> delimit_string(string str, string delimiter){
 	vector<string> delimited_string;
 	size_t pos = 0;
 	string token;
@@ -54,9 +54,9 @@ vector<string> get_fields(vector<string> ds, tuple<int, int> startAndEnd){
 
 vector<vector<string>> delimit_multiline(string str, string delimiter){
 	vector<vector<string>> delimited_string;
-	vector<string> lines = delimit_line(str, "\n");
+	vector<string> lines = delimit_string(str, "\n");
 	for (string line : lines){
-		delimited_string.push_back(delimit_line(line, delimiter));
+		delimited_string.push_back(delimit_string(line, delimiter));
 	}
 	return delimited_string;
 }

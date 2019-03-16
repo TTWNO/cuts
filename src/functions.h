@@ -10,7 +10,7 @@ string get_input();
 
 tuple<int, int> convert_negative_fields(tuple<int, int> negInts, int sizeOf);
 
-vector<string> delimit_line(string str, string delimiter);
+vector<string> delimit_string(string str, string delimiter);
 
 vector<string> get_fields(vector<string> ds, tuple<int, int> startAndEnd);
 

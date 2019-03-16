@@ -89,33 +89,33 @@ TEST_CASE("convert_negative_fields() tests with overly negative integers", "[con
 	REQUIRE(convert_negative_fields(NEG_FIELDS3, FIELDS_SIZE3) == POS_FIELDS3);
 }
 
-TEST_CASE("delimit_line() single character tests.", "[delimit_line]"){
-	REQUIRE(delimit_line(INPUT1, DEL1) == OUTPUT1);
+TEST_CASE("delimit_string() single character tests.", "[delimit_string]"){
+	REQUIRE(delimit_string(INPUT1, DEL1) == OUTPUT1);
 }
 
-TEST_CASE("delimit_line() multi character tests.", "[delimit_line]"){
-	REQUIRE(delimit_line(INPUT2, DEL2) == OUTPUT2);
+TEST_CASE("delimit_string() multi character tests.", "[delimit_string]"){
+	REQUIRE(delimit_string(INPUT2, DEL2) == OUTPUT2);
 }
 
-TEST_CASE("delimit_line() multi character hanging tests.", "[delimit_line]"){
-	REQUIRE(delimit_line(INPUT3, DEL3) == OUTPUT3);
+TEST_CASE("delimit_string() multi character hanging tests.", "[delimit_string]"){
+	REQUIRE(delimit_string(INPUT3, DEL3) == OUTPUT3);
 }
 
-TEST_CASE("delimit_line() single character hanging tests.", "[delimit_line]"){
-	REQUIRE(delimit_line(INPUT4, DEL4) == OUTPUT4);
+TEST_CASE("delimit_string() single character hanging tests.", "[delimit_string]"){
+	REQUIRE(delimit_string(INPUT4, DEL4) == OUTPUT4);
 }
 
 TEST_CASE("get_fields() tests.", "[get_fields]"){
-	REQUIRE(get_fields(delimit_line(INPUT4, DEL4), F_INPUT4_1_INDEXES) == F_OUTPUT4);
-	REQUIRE(get_fields(delimit_line(INPUT4, DEL4), F_INPUT4_2_INDEXES) == F_OUTPUT4_2);
+	REQUIRE(get_fields(delimit_string(INPUT4, DEL4), F_INPUT4_1_INDEXES) == F_OUTPUT4);
+	REQUIRE(get_fields(delimit_string(INPUT4, DEL4), F_INPUT4_2_INDEXES) == F_OUTPUT4_2);
 }
 
 TEST_CASE("get_fields() tests w/ negative ints", "[get_fields]"){
-	REQUIRE(get_fields(delimit_line(INPUT4, DEL4), F_INPUT4_3_INDEXES) == F_OUTPUT4_3);
+	REQUIRE(get_fields(delimit_string(INPUT4, DEL4), F_INPUT4_3_INDEXES) == F_OUTPUT4_3);
 }
 
 TEST_CASE("get_fields() tests w/ negative ints w/ incorrect ordering", "[get_fields]"){
-	REQUIRE(get_fields(delimit_line(INPUT4, DEL4), F_INPUT4_4_INDEXES) == F_OUTPUT4_4);
+	REQUIRE(get_fields(delimit_string(INPUT4, DEL4), F_INPUT4_4_INDEXES) == F_OUTPUT4_4);
 }
 
 TEST_CASE("delimit_multiline_string() tests.", "[delimit_multiline_string]"){
