@@ -76,7 +76,9 @@ const vector<string> REGEX_OUTPUT2 = {"I", "am", "not", "pleased"};
 const string REGEX_INPUT3 = "...the decision can be made by people [...] of 18 years or over...";
 // This boost::regex will find any set of 3 periods that optionally have either ' [' preceeding, or '] ' secceeding.
 const boost::regex REGEX_INPUT3_REGEX ("(\\s\\[)?\\.{3}(\\]\\s)?");
-const vector<string> REGEX_OUTPUT3 = {"", "the decition can be made by people of", "18 years and over", ""};
+const vector<string> REGEX_OUTPUT3 = {"", "the decision can be made by people of", "18 years and over", ""};
+const boost::regex REGEX_INPUT3_REGEX2 ("\\w+|^.{3}");
+const vector<string> REGEX_OUTPUT3_REGEX2 {"...", "the", "decision", "can", "be", "made", "by", "people", "of", "18", "years", "or", "over"};
 
 const string FAKE_FILENAME = "superlongstupidfilename_whywouldanyonehavethisfilename.russia.zip.txt.org.co.uk.gov";
 
@@ -84,11 +86,17 @@ const string COLS1_SELECT = "0-5";
 const string COLS2_SELECT = "1,2,6";
 const string COLS3_SELECT = "1,5-7";
 const string COLS4_SELECT = "7-5,0-1";
+const string COLS5_SELECT = "-2-4";
+const string COLS6_SELECT = "4--2";
+const string COLS7_SELECT = "-2--4";
 
 const vector<int> COLS1_VECTOR = {0, 1, 2, 3, 4, 5};
 const vector<int> COLS2_VECTOR = {1, 2, 6};
 const vector<int> COLS3_VECTOR = {1, 5, 6, 7};
 const vector<int> COLS4_VECTOR = {7, 6, 5, 0, 1};
+const vector<int> COLS5_VECTOR = {-2, -1, 0, 1, 2, 3, 4};
+const vector<int> COLS6_VECTOR = {4, 3, 2, 1, 0, -1, -2};
+const vector<int> COLS7_VECTOR = {-2, -3, -4};
 
 const string COLS1_STRING = "What are you looking for?";
 const vector<string> COLS1_DELIMITED = {"What", "are", "you", "looking", "for?"};
@@ -160,6 +168,10 @@ TEST_CASE("delimit_string_regex() tests.", "[delimit_string_regex]"){
 	REQUIRE(delimit_string_regex(REGEX_INPUT2, REGEX_INPUT2_REGEX) == REGEX_OUTPUT2);
 }
 
+TEST_CASE("regex_string() (match regex) tests.", "[regex_string]"){
+	REQUIRE(regex_string(REGEX_INPUT3, REGEX_INPUT3_REGEX2) == REGEX_OUTPUT3_REGEX2);
+}
+
 TEST_CASE("file_exists() tests.", "[file_exists]"){
 	REQUIRE(file_exists(FILE1_NAME) == true);
 	REQUIRE(file_exists(FAKE_FILENAME) == false);
@@ -170,4 +182,9 @@ TEST_CASE("convert_columns() tests.", "[convert_columns]"){
 	REQUIRE(convert_columns(COLS2_SELECT) == COLS2_VECTOR);
 	REQUIRE(convert_columns(COLS3_SELECT) == COLS3_VECTOR);
 	REQUIRE(convert_columns(COLS4_SELECT) == COLS4_VECTOR);
+}
+
+TEST_CASE("convert_columns() tests w/ negative integer ranges.", "[convert_columns]"){
+	REQUIRE(convert_columns(COLS5_SELECT) == COLS5_VECTOR);
+	REQUIRE(convert_columns(COLS6_SELECT) == COLS6_VECTOR);
 }
