@@ -1,7 +1,7 @@
 CUTS = cuts
 COMP=g++
 CXX_FLAGS=-g -Wall -O3
-CXX_LIB_FLAGS=-I./lib/Catch2/single_include/
+CXX_LIB_FLAGS=-I./lib/Catch2/single_include/ -I/usr/include/ -L/usr/lib/ -lboost_regex
 
 test:
 	(cd tests && ../runtests -c $(CUTS) tests.spec)
