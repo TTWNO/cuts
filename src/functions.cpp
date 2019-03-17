@@ -2,13 +2,16 @@
 #include <string>
 #include <vector>
 #include <algorithm>
-#include <regex>
+#include <boost/regex.hpp>
 #include <fstream>
 #include <unistd.h>
 #include <sys/stat.h>
 #include <stdexcept>
 
 using namespace std;
+
+//const boost::regex COLUMN_REGEX ("((?:(?<![^-])-)?\\d+)|(^-\\d+)");
+const boost::regex COLUMN_REGEX ("\\d+");
 
 vector<int> convert_negative_fields(vector<int> negCols, int sizeOf){
 	vector<int> converted_fields;
@@ -81,8 +84,8 @@ string get_file_contents(string filename){
 	return content;
 }
 
-vector<string> delimit_string_regex(string str, regex re){
-	smatch match;
+vector<string> delimit_string_regex(string str, boost::regex re){
+	boost::smatch match;
 	vector<string> delimited_by_regex;
 	while(regex_search(str, match, re)){
 		delimited_by_regex.push_back(match.prefix());
@@ -92,4 +95,37 @@ vector<string> delimit_string_regex(string str, regex re){
 		delimited_by_regex.push_back(str);
 	}
 	return delimited_by_regex;
+}
+
+vector<string> regex_string(string str, boost::regex re){
+	boost::smatch match;
+	vector<string> regexed_segments;
+	while(regex_search(str, match, re)){
+		regexed_segments.push_back(match.str());
+		str = match.suffix().str();
+	}
+	return regexed_segments;
+}
+
+vector<int> convert_columns(string selection){
+	vector<int> cols;
+	for (string sub_selection : delimit_string(selection, ",")){
+		if (sub_selection.find("-") != string::npos){
+		vector<string> column_strings = regex_string(sub_selection, COLUMN_REGEX);
+		int start_col = stoi(column_strings.at(0));
+		int end_col = stoi(column_strings.at(1));
+		if (start_col > end_col){
+			for (int i = start_col; i >= end_col; i--){
+				cols.push_back(i);
+			}
+		} else {
+			for (int i = start_col; i <= end_col; i++){
+				cols.push_back(i);
+			}	
+		}}
+		else {
+			cols.push_back(stoi(sub_selection));
+		}
+	}
+	return cols;
 }

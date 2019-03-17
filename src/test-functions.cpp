@@ -60,22 +60,22 @@ const vector<vector<string>> FILE1_OUTPUT = {
 };
 
 const string REGEX_INPUT1 = "Hello, my name is Fernando. Please see to it that my, may I say quite exquisite, horses are attended to.";
-// This regex finds any comma or period followed by 0 or 1 spaces.
-const regex REGEX_INPUT1_REGEX ("[,.] ?");
+// This boost::regex finds any comma or period followed by 0 or 1 spaces.
+const boost::regex REGEX_INPUT1_REGEX ("[,.] ?");
 const vector<string> REGEX_OUTPUT1 = {"Hello", "my name is Fernando", "Please see to it that my", "may I say quite exquisite", "horses are attended to"};
 
-// This regex finds any alphabet characters with 2 or more in sequential order.
-const regex REGEX_INPUT1_REGEX2 ("([A-Za-z])\\1+");
+// This boost::regex finds any alphabet characters with 2 or more in sequential order.
+const boost::regex REGEX_INPUT1_REGEX2 ("([A-Za-z])\\1+");
 const vector<string> REGEX_OUTPUT1_REGEX2 = {"He", "o, my name is Fernando. Please s", " to it that my, may I say quite exquisite, horses are a", "ended to."};
 
 const string REGEX_INPUT2 = "I. am. not. pleased.";
-// This regex find any period followed by one or zero spaces.
-const regex REGEX_INPUT2_REGEX ("[.] ?");
+// This boost::regex find any period followed by one or zero spaces.
+const boost::regex REGEX_INPUT2_REGEX ("[.] ?");
 const vector<string> REGEX_OUTPUT2 = {"I", "am", "not", "pleased"};
 
 const string REGEX_INPUT3 = "...the decision can be made by people [...] of 18 years or over...";
-// This regex will find any set of 3 periods that optionally have either ' [' preceeding, or '] ' secceeding.
-const regex REGEX_INPUT3_REGEX ("(\\s\\[)?\\.{3}(\\]\\s)?");
+// This boost::regex will find any set of 3 periods that optionally have either ' [' preceeding, or '] ' secceeding.
+const boost::regex REGEX_INPUT3_REGEX ("(\\s\\[)?\\.{3}(\\]\\s)?");
 const vector<string> REGEX_OUTPUT3 = {"", "the decition can be made by people of", "18 years and over", ""};
 
 const string FAKE_FILENAME = "superlongstupidfilename_whywouldanyonehavethisfilename.russia.zip.txt.org.co.uk.gov";
@@ -85,10 +85,10 @@ const string COLS2_SELECT = "1,2,6";
 const string COLS3_SELECT = "1,5-7";
 const string COLS4_SELECT = "7-5,0-1";
 
-const vector<int> COLS1_VECTOR = {1, 2, 3, 4, 5};
+const vector<int> COLS1_VECTOR = {0, 1, 2, 3, 4, 5};
 const vector<int> COLS2_VECTOR = {1, 2, 6};
 const vector<int> COLS3_VECTOR = {1, 5, 6, 7};
-const vector<int> COLS4_VECTOR = {7, 6, 5, 1};
+const vector<int> COLS4_VECTOR = {7, 6, 5, 0, 1};
 
 const string COLS1_STRING = "What are you looking for?";
 const vector<string> COLS1_DELIMITED = {"What", "are", "you", "looking", "for?"};
@@ -163,4 +163,11 @@ TEST_CASE("delimit_string_regex() tests.", "[delimit_string_regex]"){
 TEST_CASE("file_exists() tests.", "[file_exists]"){
 	REQUIRE(file_exists(FILE1_NAME) == true);
 	REQUIRE(file_exists(FAKE_FILENAME) == false);
+}
+
+TEST_CASE("convert_columns() tests.", "[convert_columns]"){
+	REQUIRE(convert_columns(COLS1_SELECT) == COLS1_VECTOR);
+	REQUIRE(convert_columns(COLS2_SELECT) == COLS2_VECTOR);
+	REQUIRE(convert_columns(COLS3_SELECT) == COLS3_VECTOR);
+	REQUIRE(convert_columns(COLS4_SELECT) == COLS4_VECTOR);
 }

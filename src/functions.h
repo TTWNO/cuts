@@ -1,7 +1,7 @@
 #include <vector>
 #include <tuple>
 #include <string>
-#include <regex>
+#include <boost/regex.hpp>
 
 using namespace std;
 
@@ -18,4 +18,7 @@ vector<vector<string>> delimit_multiline(string str, string delimiter);
 vector<vector<string>> get_multiline_fields(vector<vector<string>> dms, vector<int> fields);
 bool file_exists(const string &filename);
 string get_file_contents(string filename);
-vector<string> delimit_string_regex(string str, regex re);
+vector<string> delimit_string_regex(string str, boost::regex re);
+vector<string> regex_string(string str, boost::regex re);
+
+vector<int> convert_columns(string selection);
