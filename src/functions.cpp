@@ -13,6 +13,26 @@ using namespace std;
 const boost::regex COLUMN_REGEX ("(?:(?<=-))-?\\d+|^-?\\d+");
 //const boost::regex COLUMN_REGEX ("\\d+");
 
+class FieldsAndColumns {
+	vector<int> columns;
+	vector<string> fields;
+	string data;
+	string str_delimiter;
+	boost::regex re_delimiter;
+	public:
+		void set_fields(vector<string> new_fields){fields = new_fields;};
+		void set_columns(vector<int> new_columns){columns = new_columns;};
+		void set_data(string new_data){data = new_data;};
+		void set_string_delimiter(string new_str_delimiter){str_delimiter = new_str_delimiter;};
+		void set_regex_delimiter(boost::regex new_re_delimiter){re_delimiter = new_re_delimiter;};
+		
+		vector<string> get_fields(){return fields;};
+		vector<int> get_columns(){return columns;};
+		string get_data(){return data;};
+		string get_string_delimiter(){return str_delimiter;};
+		boost::regex get_regex_delimiter(){return re_delimiter;};
+};
+
 vector<int> convert_negative_fields(vector<int> negCols, int sizeOf){
 	vector<int> converted_fields;
 	for (int col : negCols){
