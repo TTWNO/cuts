@@ -16,6 +16,7 @@ const boost::regex COLUMN_REGEX ("(?:(?<=-))-?\\d+|^-?\\d+");
 class FieldsAndColumns {
 	vector<int> columns;
 	vector<string> fields;
+	vector<string> filtered_fields;
 	string data;
 	string str_delimiter;
 	boost::regex re_delimiter;
@@ -31,6 +32,12 @@ class FieldsAndColumns {
 		string get_data(){return data;};
 		string get_string_delimiter(){return str_delimiter;};
 		boost::regex get_regex_delimiter(){return re_delimiter;};
+
+		vector<string> delimit_data_by_string();
+		vector<string> delimit_data_by_regex();
+		vector<string> match_data_by_regex(boost::regex re);
+		vector<string> get_filtered_fields();
+
 };
 
 vector<int> convert_negative_fields(vector<int> negCols, int sizeOf){
