@@ -7,38 +7,33 @@
 #include <unistd.h>
 #include <sys/stat.h>
 #include <stdexcept>
+#include "functions.h"
 
 using namespace std;
 
 const boost::regex COLUMN_REGEX ("(?:(?<=-))-?\\d+|^-?\\d+");
 //const boost::regex COLUMN_REGEX ("\\d+");
 
-class FieldsAndColumns {
-	vector<int> columns;
-	vector<string> fields;
-	vector<string> filtered_fields;
-	string data;
-	string str_delimiter;
-	boost::regex re_delimiter;
-	public:
-		void set_fields(vector<string> new_fields){fields = new_fields;};
-		void set_columns(vector<int> new_columns){columns = new_columns;};
-		void set_data(string new_data){data = new_data;};
-		void set_string_delimiter(string new_str_delimiter){str_delimiter = new_str_delimiter;};
-		void set_regex_delimiter(boost::regex new_re_delimiter){re_delimiter = new_re_delimiter;};
-		
-		vector<string> get_fields(){return fields;};
-		vector<int> get_columns(){return columns;};
-		string get_data(){return data;};
-		string get_string_delimiter(){return str_delimiter;};
-		boost::regex get_regex_delimiter(){return re_delimiter;};
-
-		vector<string> delimit_data_by_string();
-		vector<string> delimit_data_by_regex();
-		vector<string> match_data_by_regex(boost::regex re);
-		vector<string> get_filtered_fields();
-
-};
+void FieldsAndColumns::set_fields(vector<string> new_fields){
+	fields = new_fields;
+}
+void FieldsAndColumns::set_columns(vector<int> new_columns){
+	columns = new_columns;
+}
+void FieldsAndColumns::set_data(string new_data){
+	data = new_data;
+}
+void FieldsAndColumns::set_string_delimiter(string new_str_delimiter){
+	str_delimiter = new_str_delimiter;
+}
+void FieldsAndColumns::set_regex_delimiter(boost::regex new_re_delimiter){
+	re_delimiter = new_re_delimiter;
+}
+vector<string> FieldsAndColumns::get_fields(){return fields;};
+vector<int> FieldsAndColumns::get_columns(){return columns;};
+string FieldsAndColumns::get_data(){return data;};
+string FieldsAndColumns::get_string_delimiter(){return str_delimiter;};
+boost::regex FieldsAndColumns::get_regex_delimiter(){return re_delimiter;};
 
 vector<int> convert_negative_fields(vector<int> negCols, int sizeOf){
 	vector<int> converted_fields;
@@ -50,6 +45,21 @@ vector<int> convert_negative_fields(vector<int> negCols, int sizeOf){
 		}
 	}
 	return converted_fields;
+}
+
+vector<string> FieldsAndColumns::delimit_data_by_string(){
+	string local_data = data;
+	size_t pos = 0;
+	string token;
+	while ((pos = local_data.find(str_delimiter)) != string::npos){
+		token = local_data.substr(0, pos);
+		cout << "LOCAL_DATA: " << local_data << endl;
+		cout << "TOKEN: " << token << endl;
+		fields.push_back(token);
+		local_data.erase(0, pos + str_delimiter.length());
+	}
+	fields.push_back(local_data);
+	return fields;
 }
 
 vector<string> delimit_string(string str, string delimiter){

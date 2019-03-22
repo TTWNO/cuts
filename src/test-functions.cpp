@@ -188,3 +188,10 @@ TEST_CASE("convert_columns() tests w/ negative integer ranges.", "[convert_colum
 	REQUIRE(convert_columns(COLS5_SELECT) == COLS5_VECTOR);
 	REQUIRE(convert_columns(COLS6_SELECT) == COLS6_VECTOR);
 }
+
+TEST_CASE("FieldsAndColumns.delimit_data_by_string tests", "[FieldsAndColumns.delimit_data_by_string]"){
+	FieldsAndColumns fac;
+	fac.set_data(INPUT1);
+	fac.set_string_delimiter(DEL1);
+	REQUIRE(fac.delimit_data_by_string() == OUTPUT1);
+}
