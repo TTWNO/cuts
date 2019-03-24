@@ -35,6 +35,14 @@ string FieldsAndColumns::get_data(){return data;};
 string FieldsAndColumns::get_string_delimiter(){return str_delimiter;};
 boost::regex FieldsAndColumns::get_regex_delimiter(){return re_delimiter;};
 
+vector<string> FieldsAndColumns::get_filtered_fields(){
+	vector<string> filtered_fields;
+	filtered_fields.reserve(this.fields.length());
+	for (int f : this.fields){
+		filtered_fields.push_back(this.columns.get(f));
+	}
+}
+
 vector<int> convert_negative_fields(vector<int> negCols, int sizeOf){
 	vector<int> converted_fields;
 	for (int col : negCols){

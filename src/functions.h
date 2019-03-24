@@ -49,6 +49,5 @@ class FieldsAndColumns {
 		vector<string> delimit_data_by_regex();
 		vector<string> match_data_by_regex(boost::regex re);
 		vector<string> get_filtered_fields();
-
 };
 #endif

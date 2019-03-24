@@ -195,3 +195,12 @@ TEST_CASE("FieldsAndColumns.delimit_data_by_string tests", "[FieldsAndColumns.de
 	fac.set_string_delimiter(DEL1);
 	REQUIRE(fac.delimit_data_by_string() == OUTPUT1);
 }
+
+TEST_CASE("FieldsAndColumns.get_filtered_fields() tests.", "[FieldsAndColumns.get_filtered_fields]"){
+	FieldsAndColumns fc;
+	fc.set_data(INPUT1);
+	fc.set_string_delimiter(DEL1);
+	vector<int> fields = {1, 3};
+	vector<string> OUTPUT1_2 = {"Test1", "Test3"};
+	REQUIRE(fc.get_filtered_fields() == OUTPUT1_2);
+}
