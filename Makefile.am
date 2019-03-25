@@ -1,3 +1,7 @@
-bin_PROGRAMS = cuts cuts_tests
-cuts_SOURCES = src/functions.cpp src/functions.h src/cuts.cpp
-cuts_tests_SOURCES = src/functions.cpp src/functions.h src/test-functions.cpp
+SUBDIRS = src .
+
+TESTS = functions_tests
+check_PROGRAMS = functions_tests
+functions_tests_SOURCES = test/test-functions.cpp src/functions.cpp
+functions_tests_CPPFLAGS = -I$(top_builddir)/src
+

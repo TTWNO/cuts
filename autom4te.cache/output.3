@@ -585,7 +585,6 @@ PACKAGE_STRING='cuts 0.0.1a'
 PACKAGE_BUGREPORT='44244401+TTWNO@users.noreply.github.com'
 PACKAGE_URL=''
 
-ac_unique_file="lib/Catch2/include/catch_with_main.hpp"
 # Factoring default headers for most tests.
 ac_includes_default="\
 #include <stdio.h>
@@ -2373,9 +2372,11 @@ ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $
 ac_compiler_gnu=$ac_cv_c_compiler_gnu
 
 
-
 ac_config_headers="$ac_config_headers config.h"
 
+
+
+# PKG check
 
 # Checks for programs.
 ac_ext=cpp
@@ -3547,7 +3548,7 @@ $as_echo "no" >&6; }
 fi
 
 
-# Compiler options.
+# Automake
 am__api_version='1.16'
 
 # Find a good install program.  We prefer a C program (faster),
@@ -4413,6 +4414,8 @@ END
 fi
 
 
+# Libtool
+
 # Checks for libraries.
 # FIXME: Replace `main' with a function in `-lboost_regex':
 
@@ -4452,6 +4455,45 @@ if test "x$ac_cv_lib_boost_regex_main" = xyes; then :
 _ACEOF
 
   LIBS="-lboost_regex $LIBS"
+
+fi
+
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for main in -lboost_unit_test_framework" >&5
+$as_echo_n "checking for main in -lboost_unit_test_framework... " >&6; }
+if ${ac_cv_lib_boost_unit_test_framework_main+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+  ac_check_lib_save_LIBS=$LIBS
+LIBS="-lboost_unit_test_framework  $LIBS"
+cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+
+int
+main ()
+{
+return main ();
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_link "$LINENO"; then :
+  ac_cv_lib_boost_unit_test_framework_main=yes
+else
+  ac_cv_lib_boost_unit_test_framework_main=no
+fi
+rm -f core conftest.err conftest.$ac_objext \
+    conftest$ac_exeext conftest.$ac_ext
+LIBS=$ac_check_lib_save_LIBS
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_boost_unit_test_framework_main" >&5
+$as_echo "$ac_cv_lib_boost_unit_test_framework_main" >&6; }
+if test "x$ac_cv_lib_boost_unit_test_framework_main" = xyes; then :
+  cat >>confdefs.h <<_ACEOF
+@%:@define HAVE_LIBBOOST_UNIT_TEST_FRAMEWORK 1
+_ACEOF
+
+  LIBS="-lboost_unit_test_framework $LIBS"
 
 fi
 
@@ -5164,7 +5206,7 @@ fi
 done
 
 
-ac_config_files="$ac_config_files Makefile"
+ac_config_files="$ac_config_files Makefile src/Makefile"
 
 cat >confcache <<\_ACEOF
 # This file is a shell script that caches the results of configure
@@ -5898,6 +5940,7 @@ do
     "config.h") CONFIG_HEADERS="$CONFIG_HEADERS config.h" ;;
     "depfiles") CONFIG_COMMANDS="$CONFIG_COMMANDS depfiles" ;;
     "Makefile") CONFIG_FILES="$CONFIG_FILES Makefile" ;;
+    "src/Makefile") CONFIG_FILES="$CONFIG_FILES src/Makefile" ;;
 
   *) as_fn_error $? "invalid argument: \`$ac_config_target'" "$LINENO" 5;;
   esac
