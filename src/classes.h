@@ -1,6 +1,8 @@
 #include <string>
 #include <vector>
-#include <boost/regex>
+#include <boost/regex.hpp>
+
+using namespace std;
 
 class FieldsAndColumns {
 	vector<int> filter_nums;
@@ -33,5 +35,5 @@ class File {
 	public:
 		string name;
 		string contents;
-		FieldAndColumns fields_and_columns;
-}
+		FieldsAndColumns fields_and_columns;
+};
