@@ -17,8 +17,8 @@ const boost::regex COLUMN_REGEX ("(?:(?<=-))-?\\d+|^-?\\d+");
 void FieldsAndColumns::set_fields(vector<string> new_fields){
 	fields = new_fields;
 }
-void FieldsAndColumns::set_columns(vector<int> new_columns){
-	columns = new_columns;
+void FieldsAndColumns::set_filter_nums(vector<int> new_filter_nums){
+	filter_nums = new_filter_nums;
 }
 void FieldsAndColumns::set_data(string new_data){
 	data = new_data;
@@ -30,17 +30,22 @@ void FieldsAndColumns::set_regex_delimiter(boost::regex new_re_delimiter){
 	re_delimiter = new_re_delimiter;
 }
 vector<string> FieldsAndColumns::get_fields(){return fields;};
-vector<int> FieldsAndColumns::get_columns(){return columns;};
+vector<int> FieldsAndColumns::get_filter_nums(){return filter_nums;};
 string FieldsAndColumns::get_data(){return data;};
 string FieldsAndColumns::get_string_delimiter(){return str_delimiter;};
 boost::regex FieldsAndColumns::get_regex_delimiter(){return re_delimiter;};
 
 vector<string> FieldsAndColumns::get_filtered_fields(){
-	vector<string> filtered_fields;
-	filtered_fields.reserve(this.fields.length());
-	for (int f : this.fields){
-		filtered_fields.push_back(this.columns.get(f));
+	vector<string> filtered_columns;
+	filtered_columns.reserve(filter_nums.size());
+	for (int f : filter_nums){
+		try{
+			filtered_columns.push_back(fields.at(f-1));
+		} catch (const exception& ex) {
+			filtered_columns.push_back("");
+		}
 	}
+	return filtered_columns;
 }
 
 vector<int> convert_negative_fields(vector<int> negCols, int sizeOf){

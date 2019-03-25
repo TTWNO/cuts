@@ -200,7 +200,20 @@ TEST_CASE("FieldsAndColumns.get_filtered_fields() tests.", "[FieldsAndColumns.ge
 	FieldsAndColumns fc;
 	fc.set_data(INPUT1);
 	fc.set_string_delimiter(DEL1);
-	vector<int> fields = {1, 3};
+	vector<int> filter_nums = {1, 3};
 	vector<string> OUTPUT1_2 = {"Test1", "Test3"};
+	fc.set_filter_nums(filter_nums);
+	fc.delimit_data_by_string();
 	REQUIRE(fc.get_filtered_fields() == OUTPUT1_2);
+}
+
+TEST_CASE("FieldsAndColumns.get_filtered_fields() tests w/ non-referenceable columns.", "[FieldsAndColumns.get_filtered_fields]"){
+	FieldsAndColumns fc;
+	fc.set_data(INPUT1);
+	fc.set_string_delimiter(DEL1);
+	vector<int> filter_nums = {1, 8};
+	vector<string> OUTPUT1_3 = {"Test1", ""};
+	fc.set_filter_nums(filter_nums);
+	fc.delimit_data_by_string();
+	REQUIRE(fc.get_filtered_fields() == OUTPUT1_3);
 }

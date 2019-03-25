@@ -26,7 +26,7 @@ vector<string> regex_string(string str, boost::regex re);
 vector<int> convert_columns(string selection);
 
 class FieldsAndColumns {
-	vector<int> columns;
+	vector<int> filter_nums;
 	vector<string> fields;
 	vector<string> filtered_fields;
 	string data;
@@ -34,7 +34,7 @@ class FieldsAndColumns {
 	boost::regex re_delimiter;
 	public:
 		void set_fields(vector<string> new_fields);
-		void set_columns(vector<int> new_columns);
+		void set_filter_nums(vector<int> new_columns);
 		void set_string_delimiter(string new_str_delimiter);
 		void set_data(string new_data);
 		void set_regex_delimiter(boost::regex re);
@@ -43,7 +43,7 @@ class FieldsAndColumns {
 		string get_data();
 		boost::regex get_regex_delimiter();
 		vector<string> delimit_data_by_string();
-		vector<int> get_columns();
+		vector<int> get_filter_nums();
 		string get_string_delimiter();
 
 		vector<string> delimit_data_by_regex();
