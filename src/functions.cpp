@@ -11,7 +11,6 @@
 using namespace std;
 
 const boost::regex COLUMN_REGEX ("(?:(?<=-))-?\\d+|^-?\\d+");
-//const boost::regex COLUMN_REGEX ("\\d+");
 
 vector<int> convert_negative_fields(vector<int> negCols, int sizeOf){
 	vector<int> converted_fields;
@@ -90,11 +89,6 @@ vector<string> delimit_string_regex(string str, boost::regex re){
 	boost::sregex_iterator i2;
 	vector<string> delimited_by_regex;
 	
-	//for_each(i1, i2, [&delimited_by_regex](const boost::match_results<string::const_iterator>& results){
-				
-	//		prev_match = results;
-	//		});
-
 	while(regex_search(str, match, re)){
 		delimited_by_regex.push_back(match.prefix());
 		str = match.suffix().str();
@@ -119,12 +113,9 @@ vector<string> regex_string(string str, boost::regex re){
 
 vector<int> convert_columns(string selection){
 	vector<int> cols;
-	cout << "SELECTION: '" << selection << "'" << endl;
 	for (string sub_selection : delimit_string(selection, ",")){
 		if (sub_selection.find("-") != string::npos){
-		cout << "SUBSELECTION(N-): '" << sub_selection << "'" << endl;
 		vector<string> column_strings = regex_string(sub_selection, COLUMN_REGEX);
-		cout << "SC: '" << column_strings.at(0) << "'\nEC: '" << column_strings.at(1) << endl;;
 		int start_col = stoi(column_strings.at(0));
 		int end_col = stoi(column_strings.at(1));
 		if (start_col > end_col){
