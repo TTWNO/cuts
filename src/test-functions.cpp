@@ -191,32 +191,3 @@ BOOST_AUTO_TEST_CASE(convert_columnsTestsWithNegativeIntegerRanges){
 	BOOST_CHECK(convert_columns(COLS5_SELECT) == COLS5_VECTOR);
 	BOOST_CHECK(convert_columns(COLS6_SELECT) == COLS6_VECTOR);
 }
-
-TEST_CASE("FieldsAndColumns.delimit_data_by_string tests", "[FieldsAndColumns.delimit_data_by_string]"){
-	FieldsAndColumns fac;
-	fac.set_data(INPUT1);
-	fac.set_string_delimiter(DEL1);
-	REQUIRE(fac.delimit_data_by_string() == OUTPUT1);
-}
-
-TEST_CASE("FieldsAndColumns.get_filtered_fields() tests.", "[FieldsAndColumns.get_filtered_fields]"){
-	FieldsAndColumns fc;
-	fc.set_data(INPUT1);
-	fc.set_string_delimiter(DEL1);
-	vector<int> filter_nums = {1, 3};
-	vector<string> OUTPUT1_2 = {"Test1", "Test3"};
-	fc.set_filter_nums(filter_nums);
-	fc.delimit_data_by_string();
-	REQUIRE(fc.get_filtered_fields() == OUTPUT1_2);
-}
-
-TEST_CASE("FieldsAndColumns.get_filtered_fields() tests w/ non-referenceable columns.", "[FieldsAndColumns.get_filtered_fields]"){
-	FieldsAndColumns fc;
-	fc.set_data(INPUT1);
-	fc.set_string_delimiter(DEL1);
-	vector<int> filter_nums = {1, 8};
-	vector<string> OUTPUT1_3 = {"Test1", ""};
-	fc.set_filter_nums(filter_nums);
-	fc.delimit_data_by_string();
-	REQUIRE(fc.get_filtered_fields() == OUTPUT1_3);
-}
