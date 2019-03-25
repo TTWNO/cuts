@@ -42,5 +42,6 @@ AC_FUNC_MALLOC
 AC_CHECK_FUNCS([dup2 memset pow])
 
 AC_CONFIG_FILES([Makefile
-		src/Makefile])
+		src/Makefile
+		test/Makefile])
 AC_OUTPUT
