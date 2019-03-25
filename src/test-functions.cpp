@@ -1,4 +1,7 @@
-#include <catch2/catch.hpp>
+#define BOOST_MAIN
+#define BOOST_TEST_MODULE FunctionsUnitTest
+#define BOOST_TEST_DYN_LINK
+#include <boost/test/unit_test.hpp>
 #include "functions.h"
 
 using namespace std;
@@ -52,7 +55,7 @@ const vector<vector<string>> MULTILINE_OUTPUT1_FIELDED = {
 };
 
 
-const string FILE1_NAME = "tests/test_file1.txt";
+const string FILE1_NAME = "test_file1.txt";
 const string FILE1_TEXT = "I, Tait, am getting old.\nPlease, I beg, take care of my children.";
 const vector<vector<string>> FILE1_OUTPUT = {
 	{"I", " Tait", " am getting old."},
@@ -111,82 +114,82 @@ const string COLS4_STRING = "Because I'm scared of rejection. Silly girl!";
 const vector<string> COLS4_DELIMITED = {"girl!", "silly", "rejection.", "Because", "I'm"};
 
 
-TEST_CASE("convert_negative_fields() tests.", "[convert_negative_fields]"){
-	REQUIRE(convert_negative_fields(NEG_FIELDS1, FIELDS_SIZE1) == POS_FIELDS1);
-	REQUIRE(convert_negative_fields(NEG_FIELDS2, FIELDS_SIZE2) == POS_FIELDS2);
+BOOST_AUTO_TEST_CASE(convert_negative_fieldsTests){
+	BOOST_CHECK(convert_negative_fields(NEG_FIELDS1, FIELDS_SIZE1) == POS_FIELDS1);
+	BOOST_CHECK(convert_negative_fields(NEG_FIELDS2, FIELDS_SIZE2) == POS_FIELDS2);
 }
 
-TEST_CASE("convert_negative_fields() tests with overly negative integers", "[convert_negative_fields]"){
-	REQUIRE(convert_negative_fields(NEG_FIELDS3, FIELDS_SIZE3) == POS_FIELDS3);
+BOOST_AUTO_TEST_CASE(convert_negative_fieldswWithOverlyNegativeIntegers){
+	BOOST_CHECK(convert_negative_fields(NEG_FIELDS3, FIELDS_SIZE3) == POS_FIELDS3);
 }
 
-TEST_CASE("delimit_string() single character tests.", "[delimit_string]"){
-	REQUIRE(delimit_string(INPUT1, DEL1) == OUTPUT1);
+BOOST_AUTO_TEST_CASE(delimit_stringSingleCharacterTests){
+	BOOST_CHECK(delimit_string(INPUT1, DEL1) == OUTPUT1);
 }
 
-TEST_CASE("delimit_string() multi character tests.", "[delimit_string]"){
-	REQUIRE(delimit_string(INPUT2, DEL2) == OUTPUT2);
+BOOST_AUTO_TEST_CASE(delimit_stringMultiCharacterTests){
+	BOOST_CHECK(delimit_string(INPUT2, DEL2) == OUTPUT2);
 }
 
-TEST_CASE("delimit_string() multi character hanging tests.", "[delimit_string]"){
-	REQUIRE(delimit_string(INPUT3, DEL3) == OUTPUT3);
+BOOST_AUTO_TEST_CASE(delimit_stringMultiCharacterHangingTests){
+	BOOST_CHECK(delimit_string(INPUT3, DEL3) == OUTPUT3);
 }
 
-TEST_CASE("delimit_string() single character hanging tests.", "[delimit_string]"){
-	REQUIRE(delimit_string(INPUT4, DEL4) == OUTPUT4);
+BOOST_AUTO_TEST_CASE(delimit_stringSingleCharacterHangingTests){
+	BOOST_CHECK(delimit_string(INPUT4, DEL4) == OUTPUT4);
 }
 
-TEST_CASE("get_fields() tests.", "[get_fields]"){
-	REQUIRE(get_fields(delimit_string(INPUT4, DEL4), F_INPUT4_1_INDEXES) == F_OUTPUT4);
-	REQUIRE(get_fields(delimit_string(INPUT4, DEL4), F_INPUT4_2_INDEXES) == F_OUTPUT4_2);
+BOOST_AUTO_TEST_CASE(get_fieldsTests){
+	BOOST_CHECK(get_fields(delimit_string(INPUT4, DEL4), F_INPUT4_1_INDEXES) == F_OUTPUT4);
+	BOOST_CHECK(get_fields(delimit_string(INPUT4, DEL4), F_INPUT4_2_INDEXES) == F_OUTPUT4_2);
 }
 
-TEST_CASE("get_fields() tests w/ negative ints", "[get_fields]"){
-	REQUIRE(get_fields(delimit_string(INPUT4, DEL4), convert_negative_fields(F_INPUT4_3_INDEXES, OUTPUT4.size())) == F_OUTPUT4_3);
+BOOST_AUTO_TEST_CASE(get_fieldsTestsWithNegativeInts){
+	BOOST_CHECK(get_fields(delimit_string(INPUT4, DEL4), convert_negative_fields(F_INPUT4_3_INDEXES, OUTPUT4.size())) == F_OUTPUT4_3);
 }
 
-TEST_CASE("get_fields() tests w/ negative ints w/ incorrect ordering", "[get_fields]"){
-	REQUIRE(get_fields(delimit_string(INPUT4, DEL4), convert_negative_fields(F_INPUT4_4_INDEXES, OUTPUT4.size())) == F_OUTPUT4_4);
+BOOST_AUTO_TEST_CASE(get_fieldsTestsWithNegativeIntsWithIncorrectOrdering){
+	BOOST_CHECK(get_fields(delimit_string(INPUT4, DEL4), convert_negative_fields(F_INPUT4_4_INDEXES, OUTPUT4.size())) == F_OUTPUT4_4);
 }
 
-TEST_CASE("delimit_multiline_string() tests.", "[delimit_multiline_string]"){
-	REQUIRE(delimit_multiline(MULTILINE_INPUT1, MULTILINE_DEL1) == MULTILINE_OUTPUT1);
-	REQUIRE(delimit_multiline(FILE1_TEXT, ",") == FILE1_OUTPUT);
+BOOST_AUTO_TEST_CASE(delimit_multiline_stringTests){
+	BOOST_CHECK(delimit_multiline(MULTILINE_INPUT1, MULTILINE_DEL1) == MULTILINE_OUTPUT1);
+	BOOST_CHECK(delimit_multiline(FILE1_TEXT, ",") == FILE1_OUTPUT);
 }
 
-TEST_CASE("get_multiline_fields() tests.", "[get_multiline_fields]"){
-	REQUIRE(get_multiline_fields(MULTILINE_OUTPUT1, MULTILINE_FIELDS1) == MULTILINE_OUTPUT1_FIELDED);
+BOOST_AUTO_TEST_CASE(get_multiline_fieldsTests){
+	BOOST_CHECK(get_multiline_fields(MULTILINE_OUTPUT1, MULTILINE_FIELDS1) == MULTILINE_OUTPUT1_FIELDED);
 }
 
-TEST_CASE("get_file_contents() tests.", "[get_file_contents]"){
-	REQUIRE(get_file_contents(FILE1_NAME) == FILE1_TEXT);
+BOOST_AUTO_TEST_CASE(get_file_contentsTests){
+	BOOST_CHECK(get_file_contents(FILE1_NAME) == FILE1_TEXT);
 }
 
-TEST_CASE("delimit_string_regex() tests.", "[delimit_string_regex]"){
-	REQUIRE(delimit_string_regex(REGEX_INPUT1, REGEX_INPUT1_REGEX) == REGEX_OUTPUT1);
-	REQUIRE(delimit_string_regex(REGEX_INPUT1, REGEX_INPUT1_REGEX2) == REGEX_OUTPUT1_REGEX2);
-	REQUIRE(delimit_string_regex(REGEX_INPUT2, REGEX_INPUT2_REGEX) == REGEX_OUTPUT2);
+BOOST_AUTO_TEST_CASE(delimit_string_regexTests){
+	BOOST_CHECK(delimit_string_regex(REGEX_INPUT1, REGEX_INPUT1_REGEX) == REGEX_OUTPUT1);
+	BOOST_CHECK(delimit_string_regex(REGEX_INPUT1, REGEX_INPUT1_REGEX2) == REGEX_OUTPUT1_REGEX2);
+	BOOST_CHECK(delimit_string_regex(REGEX_INPUT2, REGEX_INPUT2_REGEX) == REGEX_OUTPUT2);
 }
 
-TEST_CASE("regex_string() (match regex) tests.", "[regex_string]"){
-	REQUIRE(regex_string(REGEX_INPUT3, REGEX_INPUT3_REGEX2) == REGEX_OUTPUT3_REGEX2);
+BOOST_AUTO_TEST_CASE(regex_stringAKAMatchRegexTests){
+	BOOST_CHECK(regex_string(REGEX_INPUT3, REGEX_INPUT3_REGEX2) == REGEX_OUTPUT3_REGEX2);
 }
 
-TEST_CASE("file_exists() tests.", "[file_exists]"){
-	REQUIRE(file_exists(FILE1_NAME) == true);
-	REQUIRE(file_exists(FAKE_FILENAME) == false);
+BOOST_AUTO_TEST_CASE(file_existsTests){
+	BOOST_CHECK(file_exists(FILE1_NAME) == true);
+	BOOST_CHECK(file_exists(FAKE_FILENAME) == false);
 }
 
-TEST_CASE("convert_columns() tests.", "[convert_columns]"){
-	REQUIRE(convert_columns(COLS1_SELECT) == COLS1_VECTOR);
-	REQUIRE(convert_columns(COLS2_SELECT) == COLS2_VECTOR);
-	REQUIRE(convert_columns(COLS3_SELECT) == COLS3_VECTOR);
-	REQUIRE(convert_columns(COLS4_SELECT) == COLS4_VECTOR);
+BOOST_AUTO_TEST_CASE(convert_columnsTests){
+	BOOST_CHECK(convert_columns(COLS1_SELECT) == COLS1_VECTOR);
+	BOOST_CHECK(convert_columns(COLS2_SELECT) == COLS2_VECTOR);
+	BOOST_CHECK(convert_columns(COLS3_SELECT) == COLS3_VECTOR);
+	BOOST_CHECK(convert_columns(COLS4_SELECT) == COLS4_VECTOR);
 }
 
-TEST_CASE("convert_columns() tests w/ negative integer ranges.", "[convert_columns]"){
-	REQUIRE(convert_columns(COLS5_SELECT) == COLS5_VECTOR);
-	REQUIRE(convert_columns(COLS6_SELECT) == COLS6_VECTOR);
+BOOST_AUTO_TEST_CASE(convert_columnsTestsWithNegativeIntegerRanges){
+	BOOST_CHECK(convert_columns(COLS5_SELECT) == COLS5_VECTOR);
+	BOOST_CHECK(convert_columns(COLS6_SELECT) == COLS6_VECTOR);
 }
 
 TEST_CASE("FieldsAndColumns.delimit_data_by_string tests", "[FieldsAndColumns.delimit_data_by_string]"){

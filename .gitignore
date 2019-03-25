@@ -21,7 +21,7 @@
 *.smod
 
 # Compiled Static libraries
-*.lai
+*.la
 *.la
 *.a
 *.lib
@@ -30,4 +30,50 @@
 *.exe
 *.out
 *.app
+
+# http://www.gnu.org/software/automake
+
+Makefile.in
+Makefile
+/ar-lib
+/mdate-sh
+/py-compile
+/test-driver
+/ylwrap
+
+# http://www.gnu.org/software/autoconf
+
+autom4te.cache
+/autoscan.log
+/autoscan-*.log
+/aclocal.m4
+/compile
+/configure.scan
+/depcomp
+/missing
+
+# https://www.gnu.org/software/libtool/
+
+/ltmain.sh
+
+# http://www.gnu.org/software/texinfo
+
+/texinfo.tex
+
+# http://www.gnu.org/software/m4/
+
+m4/libtool.m4
+m4/ltoptions.m4
+m4/ltsugar.m4
+m4/ltversion.m4
+m4/lt~obsolete.m4
+
+/config.*
+/m4/
+/stamp-h?
+.deps/
+.dirstamp
+*~
+
+/test-suite.log
 
