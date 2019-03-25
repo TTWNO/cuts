@@ -71,7 +71,7 @@ m4/lt~obsolete.m4
 /config.*
 /m4/
 /stamp-h?
-.deps/
+*.deps/
 .dirstamp
 *~
 
