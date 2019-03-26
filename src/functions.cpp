@@ -7,22 +7,17 @@
 #include <unistd.h>
 #include <sys/stat.h>
 #include <stdexcept>
+#include <cmath>
 #include "functions.h"
 
 using namespace std;
 
 const boost::regex COLUMN_REGEX ("(?:(?<=-))-?\\d+|^-?\\d+");
 
-vector<int> convert_negative_fields(vector<int> negCols, int sizeOf){
-	vector<int> converted_fields;
-	for (int col : negCols){
-		if (col < 0){
-			converted_fields.push_back(col + sizeOf);
-		} else {
-			converted_fields.push_back(col);
-		}
-	}
-	return converted_fields;
+void log(string info){
+	ofstream log_file("log.txt", ios_base::app);
+	log_file << info;
+	log_file.close();
 }
 
 vector<string> delimit_string(string str, string delimiter){
@@ -41,15 +36,36 @@ vector<string> delimit_string(string str, string delimiter){
 
 vector<string> get_fields(vector<string> ds, vector<int> cols){
 	vector<string> filtered_cols;
-	for (int col : cols)
-	{
-		if (col < 0){
-			throw invalid_argument("Column cannot be begative.");
-		} else if (col > ds.size()-1){
-			throw invalid_argument("Column cannot be longer than the columns to choose from.");
-		}
-		filtered_cols.push_back(ds.at(col));
-	}
+	filtered_cols.resize(cols.size());
+
+	log("SIZE: ");
+	log(to_string(ds.size()));
+	log("\n");
+	transform(cols.begin(), cols.end(), filtered_cols.begin(),
+			[&,ds](int col) -> string {
+				if (col < 0){
+					//TODO handle overly negative ints.
+					return ds.at(ds.size() + col);
+				} else if (col > ds.size() -1){
+					return "";
+				} else {
+					log(to_string(col-1));
+					log(":");
+					log(ds.at(col-1));
+					log("\n");
+					return ds.at(col -1);
+				}
+			}
+		     );
+	//for (int col : cols)
+	//{
+	//	if (col < 0){
+	//		throw invalid_argument("Column cannot be begative.");
+	//	} else if (col > ds.size()-1){
+	//		throw invalid_argument("Column cannot be longer than the columns to choose from.");
+	//	}
+	//	filtered_cols.push_back(ds.at(col));
+	//}
 	return filtered_cols;
 }
 

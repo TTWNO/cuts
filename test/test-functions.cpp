@@ -9,6 +9,8 @@ using namespace std;
 const string INPUT1="Test1,Test2,Test3";
 const string DEL1=",";
 const vector<string> OUTPUT1 = {"Test1", "Test2", "Test3"};
+const vector<int> INPUT1_FIELDS = {1, 2, 7};
+const vector<string> OUTPUT1_FILTERED = {"Test1", "Test2", ""};
 
 const string INPUT2="Testw/longdelimitTest2w/longdelimitTest3w/longdelimitTest4";
 const string DEL2="w/longdelimit";
@@ -21,9 +23,9 @@ const vector<string> OUTPUT3 = {"Test1", "Test2", "Test3", ""};
 const string INPUT4="Test7,Test8,Test9,";
 const string DEL4=",";
 const vector<string> OUTPUT4 = {"Test7", "Test8", "Test9", ""};
-const vector<int> F_INPUT4_1_INDEXES = {0, 1, 2};
+const vector<int> F_INPUT4_1_INDEXES = {1, 2, 3};
 const vector<string> F_OUTPUT4 = {"Test7", "Test8", "Test9"};
-const vector<int> F_INPUT4_2_INDEXES = {1};
+const vector<int> F_INPUT4_2_INDEXES = {2};
 const vector<string> F_OUTPUT4_2 = {"Test8"};
 const vector<int> F_INPUT4_3_INDEXES = {-3, -2};
 const vector<string> F_OUTPUT4_3 = {"Test8", "Test9"};
@@ -48,7 +50,7 @@ const vector<vector<string>> MULTILINE_OUTPUT1 = {
 	{"Test1", "Test2"},
 	{"Test3", "Test4"}
 };
-const vector<int> MULTILINE_FIELDS1 = {0};
+const vector<int> MULTILINE_FIELDS1 = {1};
 const vector<vector<string>> MULTILINE_OUTPUT1_FIELDED = {
 	{"Test1"},
 	{"Test3"}
@@ -114,15 +116,6 @@ const string COLS4_STRING = "Because I'm scared of rejection. Silly girl!";
 const vector<string> COLS4_DELIMITED = {"girl!", "silly", "rejection.", "Because", "I'm"};
 
 
-BOOST_AUTO_TEST_CASE(convert_negative_fieldsTests){
-	BOOST_CHECK(convert_negative_fields(NEG_FIELDS1, FIELDS_SIZE1) == POS_FIELDS1);
-	BOOST_CHECK(convert_negative_fields(NEG_FIELDS2, FIELDS_SIZE2) == POS_FIELDS2);
-}
-
-BOOST_AUTO_TEST_CASE(convert_negative_fieldswWithOverlyNegativeIntegers){
-	BOOST_CHECK(convert_negative_fields(NEG_FIELDS3, FIELDS_SIZE3) == POS_FIELDS3);
-}
-
 BOOST_AUTO_TEST_CASE(delimit_stringSingleCharacterTests){
 	BOOST_CHECK(delimit_string(INPUT1, DEL1) == OUTPUT1);
 }
@@ -140,16 +133,9 @@ BOOST_AUTO_TEST_CASE(delimit_stringSingleCharacterHangingTests){
 }
 
 BOOST_AUTO_TEST_CASE(get_fieldsTests){
+	BOOST_CHECK(get_fields(delimit_string(INPUT1, DEL1), INPUT1_FIELDS) == OUTPUT1_FILTERED);
 	BOOST_CHECK(get_fields(delimit_string(INPUT4, DEL4), F_INPUT4_1_INDEXES) == F_OUTPUT4);
 	BOOST_CHECK(get_fields(delimit_string(INPUT4, DEL4), F_INPUT4_2_INDEXES) == F_OUTPUT4_2);
-}
-
-BOOST_AUTO_TEST_CASE(get_fieldsTestsWithNegativeInts){
-	BOOST_CHECK(get_fields(delimit_string(INPUT4, DEL4), convert_negative_fields(F_INPUT4_3_INDEXES, OUTPUT4.size())) == F_OUTPUT4_3);
-}
-
-BOOST_AUTO_TEST_CASE(get_fieldsTestsWithNegativeIntsWithIncorrectOrdering){
-	BOOST_CHECK(get_fields(delimit_string(INPUT4, DEL4), convert_negative_fields(F_INPUT4_4_INDEXES, OUTPUT4.size())) == F_OUTPUT4_4);
 }
 
 BOOST_AUTO_TEST_CASE(delimit_multiline_stringTests){

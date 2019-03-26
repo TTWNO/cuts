@@ -10,8 +10,6 @@ using namespace std;
 int test_get_1();
 string get_input();
 
-vector<int> convert_negative_fields(vector<int> negCols, int sizeOf);
-
 vector<string> delimit_string(string str, string delimiter);
 
 vector<string> get_fields(vector<string> ds, vector<int> cols);
