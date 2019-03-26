@@ -34,7 +34,7 @@ vector<string> delimit_string(string str, string delimiter){
 	return delimited_string;
 }
 
-vector<string> get_fields(vector<string> ds, vector<int> cols){
+vector<string> filter_fields(vector<string> ds, vector<int> cols){
 	vector<string> filtered_cols;
 	filtered_cols.resize(cols.size());
 
@@ -46,7 +46,7 @@ vector<string> get_fields(vector<string> ds, vector<int> cols){
 				if (col < 0){
 					//TODO handle overly negative ints.
 					return ds.at(ds.size() + col);
-				} else if (col > ds.size() -1){
+				} else if (col > ds.size()){
 					return "";
 				} else {
 					log(to_string(col-1));
@@ -81,7 +81,7 @@ vector<vector<string>> delimit_multiline(string str, string delimiter){
 vector<vector<string>> get_multiline_fields(vector<vector<string>> dms, vector<int> cols){
 	vector<vector<string>> fielded_multiline;
 	for (vector<string> deline : dms){
-		fielded_multiline.push_back(get_fields(deline, cols));
+		fielded_multiline.push_back(filter_fields(deline, cols));
 	}
 	return fielded_multiline;
 }

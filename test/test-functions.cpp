@@ -11,6 +11,8 @@ const string DEL1=",";
 const vector<string> OUTPUT1 = {"Test1", "Test2", "Test3"};
 const vector<int> INPUT1_FIELDS = {1, 2, 7};
 const vector<string> OUTPUT1_FILTERED = {"Test1", "Test2", ""};
+const vector<int> INPUT1_FIELDS2 = {1, 3};
+const vector<string> OUTPUT1_FILTERED2 = {"Test1", "Test3"};
 
 const string INPUT2="Testw/longdelimitTest2w/longdelimitTest3w/longdelimitTest4";
 const string DEL2="w/longdelimit";
@@ -131,10 +133,11 @@ BOOST_AUTO_TEST_CASE(delimit_stringSingleCharacterHangingTests){
 	BOOST_CHECK(delimit_string(INPUT4, DEL4) == OUTPUT4);
 }
 
-BOOST_AUTO_TEST_CASE(get_fieldsTests){
-	BOOST_CHECK(get_fields(delimit_string(INPUT1, DEL1), INPUT1_FIELDS) == OUTPUT1_FILTERED);
-	BOOST_CHECK(get_fields(delimit_string(INPUT4, DEL4), F_INPUT4_1_INDEXES) == F_OUTPUT4);
-	BOOST_CHECK(get_fields(delimit_string(INPUT4, DEL4), F_INPUT4_2_INDEXES) == F_OUTPUT4_2);
+BOOST_AUTO_TEST_CASE(filter_fieldsTests){
+	BOOST_CHECK(filter_fields(OUTPUT1, INPUT1_FIELDS) == OUTPUT1_FILTERED);
+	BOOST_CHECK(filter_fields(OUTPUT1, INPUT1_FIELDS2) == OUTPUT1_FILTERED2);
+	BOOST_CHECK(filter_fields(delimit_string(INPUT4, DEL4), F_INPUT4_1_INDEXES) == F_OUTPUT4);
+	BOOST_CHECK(filter_fields(delimit_string(INPUT4, DEL4), F_INPUT4_2_INDEXES) == F_OUTPUT4_2);
 }
 
 BOOST_AUTO_TEST_CASE(delimit_multiline_stringTests){

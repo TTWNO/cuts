@@ -1,2 +1,2 @@
 bin_PROGRAMS = cuts
-cuts_SOURCES = cuts.cpp functions.cpp
+cuts_SOURCES = cuts.cpp functions.cpp classes.cpp

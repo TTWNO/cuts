@@ -1,3 +1,4 @@
+#include "functions.h"
 #include "classes.h"
 #include <iostream>
 
@@ -23,30 +24,20 @@ string FieldsAndColumns::get_string_delimiter(){return str_delimiter;};
 boost::regex FieldsAndColumns::get_regex_delimiter(){return re_delimiter;};
 
 vector<string> FieldsAndColumns::get_filtered_fields(){
-	vector<string> filtered_columns;
-	filtered_columns.reserve(filter_nums.size());
-	for (int f : filter_nums){
-		try{
-			filtered_columns.push_back(fields.at(f-1));
-		} catch (const exception& ex) {
-			filtered_columns.push_back("");
-		}
-	}
-	return filtered_columns;
+	return filter_fields(this->fields, this->filter_nums);
 }
 
-
 vector<string> FieldsAndColumns::delimit_data_by_string(){
-	string local_data = data;
-	size_t pos = 0;
-	string token;
-	while ((pos = local_data.find(str_delimiter)) != string::npos){
-		token = local_data.substr(0, pos);
-		cout << "LOCAL_DATA: " << local_data << endl;
-		cout << "TOKEN: " << token << endl;
-		fields.push_back(token);
-		local_data.erase(0, pos + str_delimiter.length());
-	}
-	fields.push_back(local_data);
-	return fields;
+	this->fields = delimit_string(this->data, this->str_delimiter);
+	return this->fields;
+}
+
+vector<string> FieldsAndColumns::delimit_data_by_regex(){
+	this->fields = delimit_string_regex(this->data, this->re_delimiter);
+	return this->fields;
+}
+
+vector<string> FieldsAndColumns::match_data_by_regex(boost::regex re){
+	this->fields = regex_string(this->data, re);
+	return this->fields;
 }
