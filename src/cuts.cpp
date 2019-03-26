@@ -10,7 +10,8 @@ vector<FieldsAndColumns> facs;
 int main(int argc, char* argv[]){
 	string FILENAME = "";
 	string INPUT_DELIMITER;
-	string OUTPUT_DELIMITER;
+	boost::regex DEFAULT_INPUT_DELIMITER ("[, \\t]+");
+	string OUTPUT_DELIMITER = " ";
 	vector<int> FIELDS;
 
 	for (int i = 1; i< argc; i++){
@@ -34,6 +35,9 @@ int main(int argc, char* argv[]){
 				string cols = argv[++i];
 				cout << "Columns: " << cols << endl;
 				FIELDS = convert_columns(cols);
+				for (int f : FIELDS){
+					cout << "F: " << f << endl;
+				}
 			}
 		}
 		// Last option always. For performance sake.
@@ -55,18 +59,29 @@ int main(int argc, char* argv[]){
 		}
 		if (FILENAME != ""){
 			cout << "Filename: " << FILENAME << endl;
-			FieldsAndColumns fc;
-			fc.set_data(get_file_contents(FILENAME));
-			fc.set_string_delimiter(INPUT_DELIMITER);
-			fc.set_filter_nums(FIELDS);
-			fc.delimit_data_by_string();
-			facs.push_back(fc);
+			for (string sub_data : delimit_string(get_file_contents(FILENAME), "\n")){
+				if (sub_data != ""){
+					FieldsAndColumns fc;
+					fc.set_data(sub_data);
+					if (INPUT_DELIMITER != ""){
+						fc.set_string_delimiter(INPUT_DELIMITER);
+						fc.delimit_data_by_string();
+					} else {
+						fc.set_regex_delimiter(DEFAULT_INPUT_DELIMITER);
+						fc.delimit_data_by_regex();
+					}
+					fc.set_filter_nums(FIELDS);
+					facs.push_back(fc);
+				}
+			}
 		}
 	}
 	for (FieldsAndColumns fc : facs){
-		for (string s : fc.get_filtered_fields()){
-			cout << "S: " << s << endl;
+		const vector<string> FILTERED_FIELDS = fc.get_filtered_fields();
+		for (int i = 0; i < FILTERED_FIELDS.size(); i++){
+			i == FILTERED_FIELDS.size()-1 ? cout << FILTERED_FIELDS.at(i) : cout << FILTERED_FIELDS.at(i) << OUTPUT_DELIMITER;
 		}
+		cout << endl;
 	}
 	return 0;
 }

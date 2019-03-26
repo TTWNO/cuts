@@ -12,7 +12,7 @@ string get_input();
 
 vector<string> delimit_string(string str, string delimiter);
 
-vector<string> filter_fields(vector<string> ds, vector<int> cols);
+vector<string> filter_fields(vector<string> ds, vector<int> cols, bool one_based_indexing=true);
 
 vector<vector<string>> delimit_multiline(string str, string delimiter);
 vector<vector<string>> get_multiline_fields(vector<vector<string>> dms, vector<int> fields);

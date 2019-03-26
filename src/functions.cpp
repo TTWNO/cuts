@@ -34,26 +34,19 @@ vector<string> delimit_string(string str, string delimiter){
 	return delimited_string;
 }
 
-vector<string> filter_fields(vector<string> ds, vector<int> cols){
+vector<string> filter_fields(vector<string> ds, vector<int> cols, bool one_based_indexing){
 	vector<string> filtered_cols;
 	filtered_cols.resize(cols.size());
 
-	log("SIZE: ");
-	log(to_string(ds.size()));
-	log("\n");
 	transform(cols.begin(), cols.end(), filtered_cols.begin(),
 			[&,ds](int col) -> string {
 				if (col < 0){
-					//TODO handle overly negative ints.
-					return ds.at(ds.size() + col);
+					//TODO handle overly negative ints e.g. -4 when ds.size()==3.
+					return ds.at(-(abs(col) % ds.size()) + ds.size()-1);
 				} else if (col > ds.size()){
 					return "";
 				} else {
-					log(to_string(col-1));
-					log(":");
-					log(ds.at(col-1));
-					log("\n");
-					return ds.at(col -1);
+					return one_based_indexing ? ds.at(col-1) : ds.at(col);
 				}
 			}
 		     );
@@ -122,20 +115,23 @@ vector<string> regex_string(string str, boost::regex re){
 vector<int> convert_columns(string selection){
 	vector<int> cols;
 	for (string sub_selection : delimit_string(selection, ",")){
-		if (sub_selection.find("-") != string::npos){
-		vector<string> column_strings = regex_string(sub_selection, COLUMN_REGEX);
-		int start_col = stoi(column_strings.at(0));
-		int end_col = stoi(column_strings.at(1));
-		if (start_col > end_col){
-			for (int i = start_col; i >= end_col; i--){
-				cols.push_back(i);
+		int find_dash = sub_selection.find("-", 1);
+		if (find_dash != string::npos && find_dash != 0){
+			vector<string> column_strings = regex_string(sub_selection, COLUMN_REGEX);
+			int start_col = stoi(column_strings.at(0));
+			cout << "SC: " << start_col << endl;
+			int end_col = stoi(column_strings.at(1));
+			if (start_col > end_col){
+				for (int i = start_col; i >= end_col; i--){
+					cols.push_back(i);
+				}
+			} else {
+				for (int i = start_col; i <= end_col; i++){
+					cols.push_back(i);
+				}	
 			}
 		} else {
-			for (int i = start_col; i <= end_col; i++){
-				cols.push_back(i);
-			}	
-		}}
-		else {
+			cout << "SL: " << sub_selection << endl;
 			cols.push_back(stoi(sub_selection));
 		}
 	}
