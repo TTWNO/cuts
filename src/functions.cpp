@@ -57,15 +57,6 @@ vector<string> filter_fields(vector<string> ds, vector<int> cols){
 				}
 			}
 		     );
-	//for (int col : cols)
-	//{
-	//	if (col < 0){
-	//		throw invalid_argument("Column cannot be begative.");
-	//	} else if (col > ds.size()-1){
-	//		throw invalid_argument("Column cannot be longer than the columns to choose from.");
-	//	}
-	//	filtered_cols.push_back(ds.at(col));
-	//}
 	return filtered_cols;
 }
 
