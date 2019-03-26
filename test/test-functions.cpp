@@ -115,7 +115,6 @@ const vector<string> COLS3_DELIMITED = {"why", "something", "already?", "Coward!
 const string COLS4_STRING = "Because I'm scared of rejection. Silly girl!";
 const vector<string> COLS4_DELIMITED = {"girl!", "silly", "rejection.", "Because", "I'm"};
 
-
 BOOST_AUTO_TEST_CASE(delimit_stringSingleCharacterTests){
 	BOOST_CHECK(delimit_string(INPUT1, DEL1) == OUTPUT1);
 }
