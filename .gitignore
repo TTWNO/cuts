@@ -80,3 +80,6 @@ m4/lt~obsolete.m4
 # sed backup files
 *.bak
 *.bak?
+
+# autotools .trs files
+*.trs
