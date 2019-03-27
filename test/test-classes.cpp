@@ -1,7 +1,4 @@
-#define BOOST_MAIN
-#define BOOST_TEST_MODULE FunctionsUnitTest
-#define BOOST_TEST_DYN_LINK
-#include <boost/test/unit_test.hpp>
+#include "catch.hpp"
 #include "classes.h"
 
 using namespace std;
@@ -15,14 +12,14 @@ vector<string> OUTPUT2 = {"Hello", "my", "name", "is", "Tait", "And", "I", "am",
 boost::regex REGEX2 ("[, \n]+");
 vector<string> OUTPUT2_REGEX_MATCH = {", ", " ", " ", " ", "\n", "    ", " ", "  ", "  ", "\n", " ", "    ", "   ,   "};
 
-BOOST_AUTO_TEST_CASE(FieldsAndColumnsCCdelimit_data_by_stringTests){
+TEST_CASE("FieldsAndColumns::delimit_data_by_string tests.", "[FieldsAndColumns::delimit_data_by_string]"){
 	FieldsAndColumns fac;
 	fac.set_data(INPUT1);
 	fac.set_string_delimiter(DEL1);
-	BOOST_CHECK(fac.delimit_data_by_string() == OUTPUT1);
+	REQUIRE(fac.delimit_data_by_string() == OUTPUT1);
 }
 
-BOOST_AUTO_TEST_CASE(FieldsAndColumnsCCget_filtered_fieldsTests){
+TEST_CASE("FieldsAndColumns::get_filtered_fields tests.", "[FieldsAndColumns::get_filtered_fields]"){
 	FieldsAndColumns fc;
 	fc.set_data(INPUT1);
 	fc.set_string_delimiter(DEL1);
@@ -30,10 +27,10 @@ BOOST_AUTO_TEST_CASE(FieldsAndColumnsCCget_filtered_fieldsTests){
 	vector<string> OUTPUT1_2 = {"Test1", "Test3"};
 	fc.set_filter_nums(filter_nums);
 	fc.delimit_data_by_string();
-	BOOST_CHECK(fc.get_filtered_fields() == OUTPUT1_2);
+	REQUIRE(fc.get_filtered_fields() == OUTPUT1_2);
 }
 
-BOOST_AUTO_TEST_CASE(FieldsAndColumnsCCget_filtered_fieldsTestsWithNonReferenceableColumns){
+TEST_CASE("FieldsAndColumns::get_filtered_fields tests with non-referenceable columns.", "[FieldsAndColumns::get_filtered_fields]"){
 	FieldsAndColumns fc;
 	fc.set_data(INPUT1);
 	fc.set_string_delimiter(DEL1);
@@ -41,18 +38,18 @@ BOOST_AUTO_TEST_CASE(FieldsAndColumnsCCget_filtered_fieldsTestsWithNonReferencea
 	vector<string> OUTPUT1_3 = {"Test1", ""};
 	fc.set_filter_nums(filter_nums);
 	fc.delimit_data_by_string();
-	BOOST_TEST(fc.get_filtered_fields() == OUTPUT1_3, boost::test_tools::per_element());
+	REQUIRE(fc.get_filtered_fields() == OUTPUT1_3);
 }
 
-BOOST_AUTO_TEST_CASE(FieldsAndColumnsCCget_delimit_by_regex){
+TEST_CASE("FieldsAndColumns::delimit_data_by_regex tests.", "[FieldsAndColumns::delimit_data_by_regex]"){
 	FieldsAndColumns fc;
 	fc.set_data(INPUT2);
 	fc.set_regex_delimiter(REGEX2);
-	BOOST_TEST(fc.delimit_data_by_regex() == OUTPUT2, boost::test_tools::per_element());
+	REQUIRE(fc.delimit_data_by_regex() == OUTPUT2);
 }
 
-BOOST_AUTO_TEST_CASE(FieldsAndColumnsCCmatch_data_to_regex){
+TEST_CASE("FieldsAndColumns::match_data_to_regex tests.", "[FieldsAndColumns::match_data_to_regex]"){
 	FieldsAndColumns fc;
 	fc.set_data(INPUT2);
-	BOOST_TEST(fc.match_data_by_regex(REGEX2) == OUTPUT2_REGEX_MATCH, boost::test_tools::per_element());
+	REQUIRE(fc.match_data_by_regex(REGEX2) == OUTPUT2_REGEX_MATCH);
 }
