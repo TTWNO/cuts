@@ -27,7 +27,9 @@ vector<int> convert_neg_ints(vector<int> negInts, int sizeOf, bool one_based_ind
 		for (int i : negInts){
 			if (i < 0){
 				pos_cols.push_back(i + sizeOf);
-			} else {
+			} else if (i < -sizeOf){
+				throw invalid_argument("Cannot have fields less than -sizeOf");
+			}else {
 				pos_cols.push_back(i);
 			}
 		}
@@ -35,7 +37,11 @@ vector<int> convert_neg_ints(vector<int> negInts, int sizeOf, bool one_based_ind
 		for (int i : negInts){
 			if (i == 0){
 				throw invalid_argument("Recieved field 0 when one-based indexing is enabled");
-			} else if (i < 0){
+			} else if (i + sizeOf == 1){
+				pos_cols.push_back(0);
+			} else if (i < -sizeOf) {
+				throw invalid_argument("Cannot have field less than -sizeOf");
+			} else if (i < 0) {
 				pos_cols.push_back(i + sizeOf);
 			} else {
 				pos_cols.push_back(i-1);	

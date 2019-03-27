@@ -10,9 +10,6 @@ const vector<int> INPUT1_FIELDS = {0, 1, 7};
 const vector<string> OUTPUT1_FILTERED = {"Test1", "Test2", ""};
 const vector<int> INPUT1_FIELDS2 = {0, 2};
 const vector<string> OUTPUT1_FILTERED2 = {"Test1", "Test3"};
-const vector<int> INPUT1_OVERLY_NEG_FIELDS = {-4, -3};
-const vector<int> INPUT1_OVERLY_NEG_FIXED_FIELDS = {2, 0};
-const vector<string> OUTPUT1_OVERLY_NEG_FIELDS = {"Test3", "Test1"};
 
 const string INPUT2="Testw/longdelimitTest2w/longdelimitTest3w/longdelimitTest4";
 const string DEL2="w/longdelimit";
@@ -42,7 +39,7 @@ const vector<int> NEG_FIELDS2 = {-12, -2};
 const int FIELDS_SIZE2 = 13;
 const vector<int> POS_FIELDS2 = {0, 11};
 
-const vector<int> NEG_FIELDS3 = {-5, -2};
+const vector<int> NEG_FIELDS3 = {-1, -2};
 const int FIELDS_SIZE3 = 4;
 const vector<int> POS_FIELDS3 = {3, 2};
 
@@ -52,7 +49,7 @@ const vector<vector<string>> MULTILINE_OUTPUT1 = {
 	{"Test1", "Test2"},
 	{"Test3", "Test4"}
 };
-const vector<int> MULTILINE_FIELDS1 = {1};
+const vector<int> MULTILINE_FIELDS1 = {0};
 const vector<vector<string>> MULTILINE_OUTPUT1_FIELDED = {
 	{"Test1"},
 	{"Test3"}
@@ -125,11 +122,7 @@ TEST_CASE("convert_neg_int tests.", "[convert_neg_int]"){
 	REQUIRE(convert_neg_ints(NEG_FIELDS1, FIELDS_SIZE1) == POS_FIELDS1);
 	REQUIRE(convert_neg_ints(NEG_FIELDS2, FIELDS_SIZE2) == POS_FIELDS2);
 	REQUIRE(convert_neg_ints(NEG_FIELDS3, FIELDS_SIZE3) == POS_FIELDS3);
-	REQUIRE(convert_neg_ints(INPUT1_FIELDS2, 4) == INPUT1_FIELDS2);
-}
-
-TEST_CASE("convert_neg_int tests with overly negative ints.", "[convert_neg_int]"){
-	REQUIRE(convert_neg_ints(INPUT1_OVERLY_NEG_FIELDS, 3) == INPUT1_OVERLY_NEG_FIXED_FIELDS);
+	REQUIRE(convert_neg_ints(INPUT1_FIELDS2, 4, false) == INPUT1_FIELDS2);
 }
 
 TEST_CASE("delimit_string multi-character tests.", "[delimit_string]"){
@@ -149,9 +142,6 @@ TEST_CASE("filter_fields tests.", "[filter_fields]"){
 	REQUIRE(filter_fields(OUTPUT1, INPUT1_FIELDS2) == OUTPUT1_FILTERED2);
 	REQUIRE(filter_fields(delimit_string(INPUT4, DEL4), F_INPUT4_1_INDEXES) == F_OUTPUT4);
 	REQUIRE(filter_fields(delimit_string(INPUT4, DEL4), F_INPUT4_2_INDEXES) == F_OUTPUT4_2);
-}
-TEST_CASE("filter_fields test with overly negative ints tests.", "[filter_fields]"){
-	REQUIRE(filter_fields(OUTPUT1, INPUT1_OVERLY_NEG_FIELDS) == OUTPUT1_OVERLY_NEG_FIELDS);
 }
 
 TEST_CASE("delimit_multiline_string tests.", "[delimit_multiline_string]"){
