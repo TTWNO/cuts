@@ -78,4 +78,4 @@ m4/lt~obsolete.m4
 *.log
 
 # sed backup files
-*.bak[0-9]?
+*.bak?
