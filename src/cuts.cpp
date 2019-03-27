@@ -12,10 +12,11 @@ int main(int argc, char* argv[]){
 	string INPUT_DELIMITER;
 	boost::regex DEFAULT_INPUT_DELIMITER ("[, \\t]+");
 	string OUTPUT_DELIMITER = " ";
-	vector<int> FIELDS;
+	vector<signed int> FIELDS;
 
 	for (int i = 1; i< argc; i++){
 		string arg = argv[i];
+		cout << "ARG: '" << arg << "'" << endl;
 		if(arg == "-d" || arg == "-t" || arg == "-s"){
 			if (i+1 < argc){
 				string dlim = argv[++i];
@@ -30,7 +31,7 @@ int main(int argc, char* argv[]){
 				cout << "Output delimiter: '" << dlim << "'" << endl;
 			}
 		}
-		else if (arg == "-c" || arg == "--columms"){
+		else if (arg == "-f" || arg == "--fields"){
 			if (i+1 < argc){
 				string cols = argv[++i];
 				cout << "Columns: " << cols << endl;
@@ -76,6 +77,7 @@ int main(int argc, char* argv[]){
 			}
 		}
 	}
+	cout << "Outputting data!" << endl;
 	for (FieldsAndColumns fc : facs){
 		const vector<string> FILTERED_FIELDS = fc.get_filtered_fields();
 		for (int i = 0; i < FILTERED_FIELDS.size(); i++){

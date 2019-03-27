@@ -2375,7 +2375,6 @@ ac_compiler_gnu=$ac_cv_c_compiler_gnu
 ac_config_headers="$ac_config_headers config.h"
 
 
-
 # PKG check
 
 # Checks for programs.
@@ -4455,45 +4454,6 @@ if test "x$ac_cv_lib_boost_regex_main" = xyes; then :
 _ACEOF
 
   LIBS="-lboost_regex $LIBS"
-
-fi
-
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for main in -lboost_unit_test_framework" >&5
-$as_echo_n "checking for main in -lboost_unit_test_framework... " >&6; }
-if ${ac_cv_lib_boost_unit_test_framework_main+:} false; then :
-  $as_echo_n "(cached) " >&6
-else
-  ac_check_lib_save_LIBS=$LIBS
-LIBS="-lboost_unit_test_framework  $LIBS"
-cat confdefs.h - <<_ACEOF >conftest.$ac_ext
-/* end confdefs.h.  */
-
-
-int
-main ()
-{
-return main ();
-  ;
-  return 0;
-}
-_ACEOF
-if ac_fn_c_try_link "$LINENO"; then :
-  ac_cv_lib_boost_unit_test_framework_main=yes
-else
-  ac_cv_lib_boost_unit_test_framework_main=no
-fi
-rm -f core conftest.err conftest.$ac_objext \
-    conftest$ac_exeext conftest.$ac_ext
-LIBS=$ac_check_lib_save_LIBS
-fi
-{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_boost_unit_test_framework_main" >&5
-$as_echo "$ac_cv_lib_boost_unit_test_framework_main" >&6; }
-if test "x$ac_cv_lib_boost_unit_test_framework_main" = xyes; then :
-  cat >>confdefs.h <<_ACEOF
-#define HAVE_LIBBOOST_UNIT_TEST_FRAMEWORK 1
-_ACEOF
-
-  LIBS="-lboost_unit_test_framework $LIBS"
 
 fi
 

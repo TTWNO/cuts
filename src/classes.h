@@ -5,7 +5,7 @@
 using namespace std;
 
 class FieldsAndColumns {
-	vector<int> filter_nums;
+	vector<signed int> filter_nums;
 	vector<string> fields;
 	vector<string> filtered_fields;
 	string data;
@@ -22,7 +22,7 @@ class FieldsAndColumns {
 		string get_data();
 		boost::regex get_regex_delimiter();
 		vector<string> delimit_data_by_string();
-		vector<int> get_filter_nums();
+		vector<signed int> get_filter_nums();
 		string get_string_delimiter();
 
 		vector<string> delimit_data_by_regex();

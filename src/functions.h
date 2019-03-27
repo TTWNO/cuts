@@ -12,6 +12,7 @@ string get_input();
 
 vector<string> delimit_string(string str, string delimiter);
 
+vector<int> convert_neg_ints(vector<int>, int sizeOf, bool one_based_indexing=true);
 vector<string> filter_fields(vector<string> ds, vector<int> cols, bool one_based_indexing=true);
 
 vector<vector<string>> delimit_multiline(string str, string delimiter);

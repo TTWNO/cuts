@@ -1,6 +1,0 @@
-[submodule "lib/--name"]
-	path = lib/--name
-	url = https://github.com/catchorg/Catch2
-[submodule "lib/catch2"]
-	path = lib/catch2
-	url = https://github.com/catchorg/Catch2

@@ -5,7 +5,6 @@ AC_PREREQ([2.69])
 AC_INIT([cuts], [0.0.1a], [44244401+TTWNO@users.noreply.github.com])
 AC_CONFIG_HEADERS([config.h])
 
-
 # PKG check
 
 # Checks for programs.
@@ -21,7 +20,6 @@ AM_INIT_AUTOMAKE([-Wall -Werror foreign subdir-objects])
 # Checks for libraries.
 # FIXME: Replace `main' with a function in `-lboost_regex':
 AC_CHECK_LIB([boost_regex], [main])
-AC_CHECK_LIB([boost_unit_test_framework], [main])
 
 # Checks for header files.
 AC_CHECK_HEADERS([unistd.h])

@@ -6,8 +6,8 @@
 #include <fstream>
 #include <unistd.h>
 #include <sys/stat.h>
-#include <stdexcept>
 #include <cmath>
+#include <stdexcept>
 #include "functions.h"
 
 using namespace std;
@@ -18,6 +18,31 @@ void log(string info){
 	ofstream log_file("log.txt", ios_base::app);
 	log_file << info;
 	log_file.close();
+}
+
+vector<int> convert_neg_ints(vector<int> negInts, int sizeOf, bool one_based_indexing){
+	vector<int> pos_cols;
+	pos_cols.reserve(negInts.size());
+	if (!one_based_indexing){
+		for (int i : negInts){
+			if (i < 0){
+				pos_cols.push_back(i + sizeOf);
+			} else {
+				pos_cols.push_back(i);
+			}
+		}
+	} else {
+		for (int i : negInts){
+			if (i == 0){
+				throw invalid_argument("Recieved field 0 when one-based indexing is enabled");
+			} else if (i < 0){
+				pos_cols.push_back(i + sizeOf);
+			} else {
+				pos_cols.push_back(i-1);	
+			}
+		}
+	}
+	return pos_cols;
 }
 
 vector<string> delimit_string(string str, string delimiter){
@@ -40,16 +65,12 @@ vector<string> filter_fields(vector<string> ds, vector<int> cols, bool one_based
 
 	transform(cols.begin(), cols.end(), filtered_cols.begin(),
 			[&,ds](int col) -> string {
-				if (col < 0){
-					//TODO handle overly negative ints e.g. -4 when ds.size()==3.
-					return ds.at(-(abs(col) % ds.size()) + ds.size()-1);
-				} else if (col > ds.size()){
+		     		if (col >= ds.size()){
 					return "";
 				} else {
-					return one_based_indexing ? ds.at(col-1) : ds.at(col);
+					return ds.at(col);
 				}
-			}
-		     );
+			});
 	return filtered_cols;
 }
 
