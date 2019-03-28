@@ -35,7 +35,7 @@ const vector<int> NEG_FIELDS1 = {-1, -3};
 const int FIELDS_SIZE1 = 15;
 const vector<int> POS_FIELDS1 = {14, 12};
 
-const vector<int> NEG_FIELDS2 = {-12, -2};
+const vector<int> NEG_FIELDS2 = {-13, -2};
 const int FIELDS_SIZE2 = 13;
 const vector<int> POS_FIELDS2 = {0, 11};
 

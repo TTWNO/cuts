@@ -11,6 +11,7 @@ class FieldsAndColumns {
 	string data;
 	string str_delimiter;
 	boost::regex re_delimiter;
+	bool one_based_indexing = false;
 	public:
 		void set_fields(vector<string> new_fields);
 		void set_filter_nums(vector<int> new_columns);

@@ -6,7 +6,7 @@ void FieldsAndColumns::set_fields(vector<string> new_fields){
 	fields = new_fields;
 }
 void FieldsAndColumns::set_filter_nums(vector<int> new_filter_nums){
-	filter_nums = convert_neg_ints(new_filter_nums, fields.size());
+	filter_nums = new_filter_nums;
 }
 void FieldsAndColumns::set_data(string new_data){
 	data = new_data;
@@ -24,6 +24,7 @@ string FieldsAndColumns::get_string_delimiter(){return str_delimiter;};
 boost::regex FieldsAndColumns::get_regex_delimiter(){return re_delimiter;};
 
 vector<string> FieldsAndColumns::get_filtered_fields(){
+	this->filter_nums = convert_neg_ints(this->filter_nums, this->fields.size(), this->one_based_indexing);
 	return filter_fields(this->fields, this->filter_nums);
 }
 
