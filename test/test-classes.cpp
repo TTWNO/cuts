@@ -6,11 +6,20 @@ using namespace std;
 string INPUT1 = "Test1,Test2,Test3";
 string DEL1 = ",";
 vector<string> OUTPUT1 = {"Test1", "Test2", "Test3"};
+vector<int> FIELDS1 = {-3, -1};
+vector<int> FIELDS2 = {0, 2};
 
 string INPUT2 = "Hello, my name is Tait\nAnd    I am  very  tired\nWeeee this    is   ,   fun.";
 vector<string> OUTPUT2 = {"Hello", "my", "name", "is", "Tait", "And", "I", "am", "very", "tired", "Weeee", "this", "is", "fun."};
 boost::regex REGEX2 ("[, \n]+");
 vector<string> OUTPUT2_REGEX_MATCH = {", ", " ", " ", " ", "\n", "    ", " ", "  ", "  ", "\n", " ", "    ", "   ,   "};
+
+TEST_CASE("FieldsAndColumns::get_filtered_fields w/ negative numbers tests.", "[FieldsAndColumns::get_filtered_fields]"){
+	FieldsAndColumns fc;
+	fc.set_data(INPUT1);
+	fc.set_string_delimiter(DEL1);
+	fc.set_filter_nums(FIELDS1);
+}
 
 TEST_CASE("FieldsAndColumns::delimit_data_by_string tests.", "[FieldsAndColumns::delimit_data_by_string]"){
 	FieldsAndColumns fac;
