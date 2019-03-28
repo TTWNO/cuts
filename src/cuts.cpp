@@ -13,11 +13,15 @@ int main(int argc, char* argv[]){
 	boost::regex DEFAULT_INPUT_DELIMITER ("[, \\t]+");
 	string OUTPUT_DELIMITER = " ";
 	vector<int> FIELDS;
+	bool ONE_BASED_INDEXING = true;
 
 	for (int i = 1; i< argc; i++){
 		string arg = argv[i];
 		cout << "ARG: '" << arg << "'" << endl;
-		if (get_option_value("-d", arg) != ""){
+		if (arg == "-0"){
+			ONE_BASED_INDEXING = false;
+		}
+		else if (get_option_value("-d", arg) != ""){
 			INPUT_DELIMITER = get_option_value("-d", arg);
 		}
 		else if (get_option_value("-D", arg) != ""){
@@ -52,6 +56,7 @@ int main(int argc, char* argv[]){
 				if (sub_data != ""){
 					FieldsAndColumns fc;
 					fc.set_data(sub_data);
+					fc.one_based_indexing = ONE_BASED_INDEXING;
 					if (INPUT_DELIMITER != ""){
 						fc.set_string_delimiter(INPUT_DELIMITER);
 						fc.delimit_data_by_string();
