@@ -22,5 +22,7 @@ string get_file_contents(string filename);
 vector<string> delimit_string_regex(string str, boost::regex re);
 vector<string> regex_string(string str, boost::regex re);
 
+string get_option_value(string option_prefix, string arg_string);
+
 vector<int> convert_columns(string selection);
 #endif

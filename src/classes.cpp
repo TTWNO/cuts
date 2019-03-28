@@ -6,7 +6,7 @@ void FieldsAndColumns::set_fields(vector<string> new_fields){
 	fields = new_fields;
 }
 void FieldsAndColumns::set_filter_nums(vector<int> new_filter_nums){
-	filter_nums = new_filter_nums;
+	filter_nums = convert_neg_ints(new_filter_nums, fields.size());
 }
 void FieldsAndColumns::set_data(string new_data){
 	data = new_data;

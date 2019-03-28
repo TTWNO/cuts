@@ -43,6 +43,10 @@ const vector<int> NEG_FIELDS3 = {-1, -2};
 const int FIELDS_SIZE3 = 4;
 const vector<int> POS_FIELDS3 = {3, 2};
 
+const vector<int> NEG_FIELDS4 = {-1};
+const int FIELDS_SIZE4 = 3;
+const vector<int> POS_FIELDS4 = {2};
+
 const string MULTILINE_INPUT1 = "Test1,Test2\nTest3,Test4";
 const string MULTILINE_DEL1 = ",";
 const vector<vector<string>> MULTILINE_OUTPUT1 = {
@@ -114,6 +118,17 @@ const vector<string> COLS3_DELIMITED = {"why", "something", "already?", "Coward!
 const string COLS4_STRING = "Because I'm scared of rejection. Silly girl!";
 const vector<string> COLS4_DELIMITED = {"girl!", "silly", "rejection.", "Because", "I'm"};
 
+const string LONG_OPTION1 = "--delimiter=";
+const string SHORT_OPTION1 = "-d";
+const string OPTION1_TEXT1 = "--delimiter=\\";
+const string OPTION1_TEXT2 = "-d\\";
+const string OPTION_VALUE1 = "\\";
+
+TEST_CASE("get_option_value() tests.", "[get_option_value]"){
+	REQUIRE(get_option_value(LONG_OPTION1, OPTION1_TEXT1) == OPTION_VALUE1);
+	REQUIRE(get_option_value(SHORT_OPTION1, OPTION1_TEXT2) == OPTION_VALUE1);
+}
+
 TEST_CASE("delimit_string single character tests", "[delimit_string]"){
 	REQUIRE(delimit_string(INPUT1, DEL1) == OUTPUT1);
 }
@@ -123,6 +138,7 @@ TEST_CASE("convert_neg_int tests.", "[convert_neg_int]"){
 	REQUIRE(convert_neg_ints(NEG_FIELDS2, FIELDS_SIZE2) == POS_FIELDS2);
 	REQUIRE(convert_neg_ints(NEG_FIELDS3, FIELDS_SIZE3) == POS_FIELDS3);
 	REQUIRE(convert_neg_ints(INPUT1_FIELDS2, 4, false) == INPUT1_FIELDS2);
+	REQUIRE(convert_neg_ints(NEG_FIELDS4, FIELDS_SIZE4) == POS_FIELDS4);
 }
 
 TEST_CASE("delimit_string multi-character tests.", "[delimit_string]"){

@@ -20,15 +20,22 @@ void log(string info){
 	log_file.close();
 }
 
+string get_option_value(string option_prefix, string arg_string){
+	if (arg_string.substr(0, option_prefix.length()) == option_prefix){
+		return arg_string.substr(option_prefix.length());
+	}
+	return "";
+}
+
 vector<int> convert_neg_ints(vector<int> negInts, int sizeOf, bool one_based_indexing){
 	vector<int> pos_cols;
 	pos_cols.reserve(negInts.size());
 	if (!one_based_indexing){
 		for (int i : negInts){
-			if (i < 0){
-				pos_cols.push_back(i + sizeOf);
-			} else if (i < -sizeOf){
+			if (i < -sizeOf){
 				throw invalid_argument("Cannot have fields less than -sizeOf");
+			} else if (i < 0){
+				pos_cols.push_back(i + sizeOf);
 			}else {
 				pos_cols.push_back(i);
 			}
@@ -37,8 +44,6 @@ vector<int> convert_neg_ints(vector<int> negInts, int sizeOf, bool one_based_ind
 		for (int i : negInts){
 			if (i == 0){
 				throw invalid_argument("Recieved field 0 when one-based indexing is enabled");
-			} else if (i + sizeOf == 1){
-				pos_cols.push_back(0);
 			} else if (i < -sizeOf) {
 				throw invalid_argument("Cannot have field less than -sizeOf");
 			} else if (i < 0) {

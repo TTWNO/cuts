@@ -12,34 +12,22 @@ int main(int argc, char* argv[]){
 	string INPUT_DELIMITER;
 	boost::regex DEFAULT_INPUT_DELIMITER ("[, \\t]+");
 	string OUTPUT_DELIMITER = " ";
-	vector<signed int> FIELDS;
+	vector<int> FIELDS;
 
 	for (int i = 1; i< argc; i++){
 		string arg = argv[i];
 		cout << "ARG: '" << arg << "'" << endl;
-		if(arg == "-d" || arg == "-t" || arg == "-s"){
-			if (i+1 < argc){
-				string dlim = argv[++i];
-				INPUT_DELIMITER = dlim;
-				cout << "Input delimiter: '" << dlim << "'" << endl;
-			}
+		if (get_option_value("-d", arg) != ""){
+			INPUT_DELIMITER = get_option_value("-d", arg);
 		}
-		else if (arg == "-D" || arg == "-T" || arg == "-S"){
-			if (i+1 < argc){
-				string dlim = argv[++i];
-				OUTPUT_DELIMITER = dlim;
-				cout << "Output delimiter: '" << dlim << "'" << endl;
-			}
+		else if (get_option_value("-D", arg) != ""){
+			OUTPUT_DELIMITER = get_option_value("-D", arg);
 		}
-		else if (arg == "-f" || arg == "--fields"){
-			if (i+1 < argc){
-				string cols = argv[++i];
-				cout << "Columns: " << cols << endl;
-				FIELDS = convert_columns(cols);
-				for (int f : FIELDS){
-					cout << "F: " << f << endl;
-				}
-			}
+		else if (get_option_value("-f", arg) != ""){
+			FIELDS = convert_columns(get_option_value("-f", arg));
+			for (int f : FIELDS){
+				cout << "F: " << f << endl;
+			}	
 		}
 		// Last option always. For performance sake.
 		else if (arg.find(":") != string::npos){
