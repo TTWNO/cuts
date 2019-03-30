@@ -1,4 +1,5 @@
 #include <iostream>
+#include <sstream>
 #include <string>
 #include "classes.h"
 #include "functions.h"
@@ -17,7 +18,6 @@ int main(int argc, char* argv[]){
 
 	for (int i = 1; i< argc; i++){
 		string arg = argv[i];
-		cout << "ARG: '" << arg << "'" << endl;
 		if (arg == "-0"){
 			ONE_BASED_INDEXING = false;
 		}
@@ -29,31 +29,24 @@ int main(int argc, char* argv[]){
 		}
 		else if (get_option_value("-f", arg) != ""){
 			FIELDS = convert_columns(get_option_value("-f", arg));
-			for (int f : FIELDS){
-				cout << "F: " << f << endl;
-			}	
 		}
 		// Last option always. For performance sake.
 		else if (arg.find(":") != string::npos){
-			cout << "Colon mode!" << endl;
 			vector<string> info = delimit_string(arg, ":");
 			string colomns = info.at(1);
 			string filename = info.at(0);
 			if (file_exists(filename)){
 				FILENAME = filename;
-				cout << "File: " << filename << endl;
 				FIELDS = convert_columns(colomns);
-				cout << "Coloumns: " << colomns << endl;
 			}
 		} else if (file_exists(arg)){
 			FILENAME = arg;
-			cout << "File: " << arg << endl;
-			cout << "Contents: " << get_file_contents(arg) << endl;
 		}
 		if (FILENAME != ""){
-			cout << "Filename: " << FILENAME << endl;
 			for (string sub_data : delimit_string(get_file_contents(FILENAME), "\n")){
 				if (sub_data != ""){
+					FILENAME = "";
+
 					FieldsAndColumns fc;
 					fc.set_data(sub_data);
 					fc.one_based_indexing = ONE_BASED_INDEXING;
@@ -70,13 +63,19 @@ int main(int argc, char* argv[]){
 			}
 		}
 	}
-	cout << "Outputting data!" << endl;
+	stringstream output;
 	for (FieldsAndColumns fc : facs){
 		const vector<string> FILTERED_FIELDS = fc.get_filtered_fields();
+		// This reason for this is because I can't jsut clear the sstream to nothing on every loop, otherwise I lose the data. And I need to add a newline AFTER, but only if there was any data to be added. :)
+		bool added_text = false;
 		for (int i = 0; i < FILTERED_FIELDS.size(); i++){
-			i == FILTERED_FIELDS.size()-1 ? cout << FILTERED_FIELDS.at(i) : cout << FILTERED_FIELDS.at(i) << OUTPUT_DELIMITER;
+			i == FILTERED_FIELDS.size()-1 ? output << FILTERED_FIELDS.at(i) : output << FILTERED_FIELDS.at(i) << OUTPUT_DELIMITER;
+			added_text = true;
 		}
-		cout << endl;
+		if (added_text){
+			output << endl;
+		}
 	}
+	cout << output.str();
 	return 0;
 }
