@@ -151,7 +151,6 @@ vector<int> convert_columns(string selection){
 		if (find_dash != string::npos && find_dash != 0){
 			vector<string> column_strings = regex_string(sub_selection, COLUMN_REGEX);
 			int start_col = stoi(column_strings.at(0));
-			cout << "SC: " << start_col << endl;
 			int end_col = stoi(column_strings.at(1));
 			if (start_col > end_col){
 				for (int i = start_col; i >= end_col; i--){
@@ -163,7 +162,6 @@ vector<int> convert_columns(string selection){
 				}	
 			}
 		} else {
-			cout << "SL: " << sub_selection << endl;
 			cols.push_back(stoi(sub_selection));
 		}
 	}
