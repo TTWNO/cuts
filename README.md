@@ -1,5 +1,7 @@
-cuts
+cuts C++ version
 ====
+
+(Originally based on the <a href="https://github.com/arielf/cuts">perl project by arielf</a>)
 
 ***cuts***: Unix/POSIX `cut` (and `paste`) on (s)teroids.
 
