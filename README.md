@@ -30,7 +30,7 @@ $ cut -f1 test.dat
 #
 # -- cuts does:
 #
-$ cuts 0 test.dat
+$ cuts -f1 test.dat
 0
 0
 0
@@ -70,7 +70,7 @@ $ cuts -f2 t.mixed
 ```
 
 #### `cuts` does automatic side-by-side pasting
-
+##### NOTE: untested on C++ rewrite
 ```
 #
 # -- cut doesn't output columns side-by-side when reading from
