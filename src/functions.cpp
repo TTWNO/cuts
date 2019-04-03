@@ -14,12 +14,6 @@ using namespace std;
 
 const boost::regex COLUMN_REGEX ("(?:(?<=-))-?\\d+|^-?\\d+");
 
-void log(string info){
-	ofstream log_file("log.txt", ios_base::app);
-	log_file << info;
-	log_file.close();
-}
-
 string get_option_value(string option_prefix, string arg_string){
 	if (arg_string.substr(0, option_prefix.length()) == option_prefix){
 		return arg_string.substr(option_prefix.length());

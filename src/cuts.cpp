@@ -1,4 +1,5 @@
 #include <iostream>
+#include <sstream>
 #include <string>
 #include "classes.h"
 #include "functions.h"
@@ -14,10 +15,14 @@ int main(int argc, char* argv[]){
 	boost::regex DEFAULT_INPUT_DELIMITER ("[, \\t]+");
 	string OUTPUT_DELIMITER = " ";
 	vector<int> FIELDS;
+	bool ONE_BASED_INDEXING = true;
 
 	for (int i = 1; i< argc; i++){
 		string arg = argv[i];
-		if (get_option_value("-d", arg) != ""){
+		if (arg == "-0"){
+			ONE_BASED_INDEXING = false;
+		}
+		else if (get_option_value("-d", arg) != ""){
 			INPUT_DELIMITER = get_option_value("-d", arg);
 		}
 		else if (get_option_value("-rd", arg) != ""){
@@ -44,8 +49,11 @@ int main(int argc, char* argv[]){
 		if (FILENAME != ""){
 			for (string sub_data : delimit_string(get_file_contents(FILENAME), "\n")){
 				if (sub_data != ""){
+					FILENAME = "";
+
 					FieldsAndColumns fc;
 					fc.set_data(sub_data);
+					fc.one_based_indexing = ONE_BASED_INDEXING;
 					if (INPUT_DELIMITER != ""){
 						fc.set_string_delimiter(INPUT_DELIMITER);
 						fc.delimit_data_by_string();
@@ -62,12 +70,19 @@ int main(int argc, char* argv[]){
 			}
 		}
 	}
+	stringstream output;
 	for (FieldsAndColumns fc : facs){
 		const vector<string> FILTERED_FIELDS = fc.get_filtered_fields();
+		// This reason for this is because I can't jsut clear the sstream to nothing on every loop, otherwise I lose the data. And I need to add a newline AFTER, but only if there was any data to be added. :)
+		bool added_text = false;
 		for (int i = 0; i < FILTERED_FIELDS.size(); i++){
-			i == FILTERED_FIELDS.size()-1 ? cout << FILTERED_FIELDS.at(i) : cout << FILTERED_FIELDS.at(i) << OUTPUT_DELIMITER;
+			i == FILTERED_FIELDS.size()-1 ? output << FILTERED_FIELDS.at(i) : output << FILTERED_FIELDS.at(i) << OUTPUT_DELIMITER;
+			added_text = true;
 		}
-		cout << endl;
+		if (added_text){
+			output << endl;
+		}
 	}
+	cout << output.str();
 	return 0;
 }
