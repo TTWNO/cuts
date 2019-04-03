@@ -35,15 +35,13 @@ $ cuts 0 test.dat
 0
 0
 ```
-As you can see, `cuts` uses zero-based indexing
-(index 0 means 1st column) by default.
+`cuts`, like cut, uses one-based indexing for columns.
+(zero-based indexing can be used by using the -0 flag).
 
-Accordingly, the examples below use 0-based indexing.
+Accordingly, the examples below use 1-based indexing.
 
-If you prefer 1-based indexing, like `cut`, you may easily
-change the default, either via the command line (`-0` option),
-or more permanently, via a small config file `~/.cuts.pl`,
-which is read early during runtime (details below).
+If you prefer 0-based indexing, like the original perl `cuts`, you may easily
+change it via the command line (`-0` option),
 
 #### `cuts` supports mixed input delimiters (e.g. both CSV and TSV)
 ```
@@ -65,7 +63,7 @@ cut -f2 t.mixed
 #
 # -- cuts does:
 #
-$ cuts 1 t.mixed
+$ cuts -f2 t.mixed
 1
 1
 1
@@ -103,7 +101,7 @@ Y
 #
 # -- cuts does automatic side-by-side printing, as expected:
 #
-$ cuts 1 t.tsv t.tsv
+$ cuts -f1 t.tsv t.tsv
 1	1
 b	b
 Y	Y
@@ -134,7 +132,7 @@ $ cut -d' ' -f2 012.txt
 # -- cuts does what makes sense
 #    while not requiring explict user action:
 #
-$ cuts 1 012.txt
+$ cuts -f2 012.txt
 1
 1
 1
@@ -159,7 +157,7 @@ $ cat 012.regex
 # -- cuts accepts perl regexps for input delimiters
 #    in this case, we set the delimiter regexp to "any sequence of non-digits"
 #
-$ cuts -d '[^0-9]+' 1 012.regex
+$ cuts -rd'[^0-9]+' -f2 012.regex
 1
 1
 1
@@ -176,7 +174,7 @@ from the end:
 #
 # -- Ask cuts to print last field only, by using a negative offset
 #
-$ cuts -1 012.txt
+$ cuts -f-1 012.txt
 2
 2
 2
@@ -200,13 +198,14 @@ $ cut -f3,2,1 file.tsv
 #
 # -- cuts does exactly what you ask it to:
 #
-$ cuts 2 1 0 file.tsv
+$ cuts -f3,2,1 file.tsv
 2	1	0
 2	1	0
 2	1	0
 ```
 
 #### `cuts` is more powerful dealing with variable number of columns:
+##### NOTE: Currently unsupported, use perl version if this is important to you.
 
 The ability to offset from the end of line, in combination with the
 ability to specify perl regular expressions as delimiters makes some
@@ -232,6 +231,7 @@ phone-number
 ```
 
 #### `cuts` forgives you if you accidentally use `-t` (like `sort` does)
+##### NOTE: Currently unsuportted, please use perl verison if this matters to you.
 
 It is unfortunate that the Unix toolset is so inconsistent in the
 choice of option-letters.  `cuts` solves this by allowing 'any of
@@ -241,7 +241,7 @@ instead of `-d` because you have the `sort` convention in your head,
 `cuts` still works as you expect it to.
 
 #### `cuts` requires minimal typing for simple column extraction tasks
-
+##### NOTE: Currently not supported, please use perl version if this matters to you.
 `cut` is harder to use, and somewhat less friendly because it doesn't
 support reasonable defaults. For example:
 
@@ -296,7 +296,7 @@ a,b,c
 # -- "cuts" does exactly what you ask it to,
 #    both slicing and joining as expected.
 #
-$ cuts file.csv 0 file.tsv 1
+$ cuts -f1 file.csv -f2 file.tsv
 0	1
 a	b
 ```
@@ -314,7 +314,7 @@ $ cat 1-20-wide.csv
 #
 # -- last 3 fields
 #
-$ cuts -3--1 1-20-wide.csv
+$ cuts -f-3--1 1-20-wide.csv
 8	9	10
 13	14	15
 18	19	20
@@ -322,7 +322,7 @@ $ cuts -3--1 1-20-wide.csv
 #
 # -- reverse order works too, as expected:
 #
-$ cuts -1--3 1-20-wide.csv
+$ cuts -f-1--3 1-20-wide.csv
 10	9	8
 15	14	13
 20	19	18
@@ -330,7 +330,8 @@ $ cuts -1--3 1-20-wide.csv
 #
 # -- and you can wrap-around the end (from negative to positive) too:
 #
-$ cuts -1-2 1-20-wide.csv
+#### NOTE: Not currently supported, unless combined with the -0 flag.
+$ cuts -f-1-2 1-20-wide.csv
 10	0	1	2
 15	0	1	2
 20	0	1	2
@@ -361,15 +362,15 @@ cuts.
 ### Reasonable defaults for everything
 
 An unspecified file-name will default to `/dev/stdin`
-so you can easily pipe any other command output into `cuts`.
+so you can easily pipe any other command output into `cuts`. (Unsupported)
 
-An unspecified column-number will default to the 1st column (0)
+An unspecified column-number will default to the 1st column (0) (Unsupported)
 
 A file-name without a column-number will cause the *last* specified
 column-number to be reused.
 
 A column-number without a file-name will cause the *last* specified
-file-name to be reused.
+file-name to be reused. (Unsupported)
 
 By default, the input column delimiter is the most common case of
 any-sequence of white-space *or* a comma, optionally surrounded by
@@ -379,12 +380,12 @@ a more complex case you may override `cuts` default
 input-field-delimiter:
 
 ```
-    $ cuts -d '<some-perl-regexp>' ...
+    $ cuts -rd'<some-perl-regexp>' ...
     # see `man perlre` for documentation on perl regular expressions
 ```
 
 Similarly, the output column delimiter which is tab by default, can be
-overridden using `-T <sep>` (or -S, or -D).  This is chosen
+overridden using `-T<sep>`.  This is chosen
 as a mnemonic: lowercase options are for input delimiters, while
 the respective upper-case options are for output delimiters.
 
@@ -399,9 +400,9 @@ extracting 2 columns (first and third) from a single file:
 ```
 # -- the traditional, cut way:
 $ cut -d, -f 1,3 file.csv
-
+##### NOTE: Not as short in this version.
 # -- the cuts way: (over 25%) shorter & sweeter:
-$ cuts file.csv 0 2
+$ cuts -f1-3 file.csv
 ```
 
 Minimal typing is also what guided the decision to include the
@@ -428,6 +429,7 @@ design and it conforms to the perl philosophy of silently converting
 undefined values to empty ones.
 
 ## Examples
+##### NOTE: Only some of this syntax is actually supported in this c++ version.
 
 ```
     cuts 0 file1 file2      Extract 1st (0) column from both files
@@ -458,6 +460,7 @@ undefined values to empty ones.
 ## Usage
 
 Simply call `cuts` without any argument to get a full usage message:
+##### No help message yet implemented. PLus, this help message is inconsistant with this version of the program.
 
 ```
 $ cuts
@@ -509,50 +512,16 @@ Usage: cuts [Options] [Column_Specs]...
         cuts 3,8-5 f1           Same as above, but 5-8 in reverse order
 ```
 
-## Further configuration & customization
-
-If you don't like `cuts` defaults, you can override them in
-an optional personal configuration file: `~/.cuts.pl`
-
-If this file exists, cuts will read it during startup allowing you
-override cuts default parameters, in particular the value of
-the `$ICS` input-column separator regexp.  The syntax of this
-file is perl:
-
-```
-    # -- If you prefer 1-based indexing by default, set $opt_0 to 1.
-    #    You may also set it from the command-line with the -0 option.
-    #    This is a mnemonic: the -0 option means "disable 0-based".
-    our $opt_0 = 0;
-
-    # -- Default column to select, when unspecified
-    our $DefaultColno = 0;
-
-    # -- Alternative file:colno char separators
-    our $FCsep = ':%#';
-
-    # -- Default input column separator
-    #    Smart matching of: CSV[+optional-spaces] / TSV / other-white-space
-    #
-    #    For quoted CSV/TSV/SSV, you may try: -d '^"|"[, \t]"|"$'
-    #    Also, see examples in the test-suite
-    our $ICS = '(?:\s*,\s*|\s+)';
-
-    # -- Default output column separator
-    our $OCS = "\t";
-
-    # -- if you use a config file, you must end it with 1;
-    # -- so executing it by cuts using perl 'do' succeeds.
-    1;
-```
-
 ## TODO items (contributions welcome)
+
 
 I made no effort to make `cuts` fast.  Although compared to the
 I/O overhead, there may be not much need for it.  If you have ideas
 on how to make the column extractions and joining more efficient,
 without compromising the simplicity, elegance and generality
 of the code, that would be welcome.
+
+This fork tried to rectify this.
 
 Per file column input delimiters.  I haven't had the need so far so
 that took a back-seat in priority.  The most common case of
@@ -561,6 +530,7 @@ the current default multi-match pattern `$ICS`. `$ICS` simply
 matches any of: multi-white-space, tabs, or (optionally space surrounded)
 commas.  This ensures that even an extreme case of a schizophrenic input like:
 
+This is supported by default in this version of cuts.
 ```
 $ cat schizo.csv
 0,1 ,  2
@@ -572,7 +542,7 @@ a  b   c
 Works correctly, and as designed/expected.
 
 ```
-$ cuts -1 schizo.csv
+$ cuts -f-1 schizo.csv
 2
 2
 2
@@ -592,24 +562,10 @@ is missing were much more critical for me when writing `cuts`.
 
 The most notable remaining issues with `cuts` are (IMHO):
 
-- Ranges going from positive to negative offsets, e.g. `2--3` are interpreted as in reverse order (because 2 > -3).  The result is a wrapped-around the beginning index-set.  This is good because is consistent with the symmetric wrap-around-the-end case of say, -3-2.  OTOH: it is bad because it is not the natural human-way of interpreting negative indexes as being higher (near the end of the line).
-- Speed (vs compiled C)
 - Unexpected results if your data has tabs, spaces, and/or commas within fields.  This is a deliberate design decision (optimize for the most common case.) that can be easily worked-around. If you don't like the default, you can either:
-  - Pass a different delimiter using: `-d 'regexp'`
-  - Make your choice permanent via the personal config file `~/.cuts.pl` and the `$ICS` (Input Column Separator) variable.
+  - Pass a different delimiter using: `-rd'regexp'`
 
 ## Other thoughts & notes
-
-#### Should the default `$ICS` be extended?
-
-To also cover `:`, `;`?
-
-Other punctuation chars?
-
-I am not sure.  For some people who regularly
-use data-sets with these chars as delimiters, it makes sense, but
-for the vast majority of users, the current simple (and minimalistic)
-default should work well.
 
 #### Why do I support the `filename:colno` syntax?
 
@@ -622,32 +578,12 @@ This introduces an ambiguity: are these arguments files or column numbers?
  - In case you want to force `1` to a column number, even in the
    presence of a file by the same name, you can use the `file:colno` syntax.
  - You may even use `#`, or `%`, as the `file:colno` separator
-   instead of `:` for somewhat greater control.
-
-
-#### Resolving option ambiguity
-
-Negative column offsets and `-` for `stdin` don't play well
-with `getopts()` because the code can no longer assume that what
-starts with `-` is an option and not an argument.
-
-`cuts` solves this by auto injecting `--` (end of options marker)
-into `@ARGV` _before_ calling getopts (if needed).  This is so the
-user never has to worry about the ambiguity.  For example, (`-v` is
-`cuts` own debugging/verbose option, while `-3` is a column index
-specifier), still this works as expected because `cuts`
-disambiguates them correctly:
-
-```
-    $ cuts -v -3 file.txt
-```
+   instead of `:` for somewhat greater control. (Currently unsupported)
 
 #### Test suite
 
-`cuts` comes with an extensive test suite to ensure
-that it behaves as designed, and that changes don't cause regressions.
-Running `make` in the top source directory or in the `tests`
-sub-directory will run the test suite.
+Simply run make check to create and run the tests.
+to run the tests with more options cd to test, then run `./tests_main.out` (or whatever the output name is).
 
 #### Historical perspective
 
@@ -676,11 +612,18 @@ negative offsets, or too complex: requiring a big manual nearby,
 or having a long list of options that were cobbled together ad-hoc,
 were out.  So I just had to write my own.
 
+And I, the author of the C++ version, wanted it to be fast.
+Althought I realize that given the way I'm doing this right now,
+it may require quite some work to get it in line with what the perl
+script was at.
+
 #### Feedback
 
-If you like `cuts`, please send me an email via github.2009
-.at. yendor.com
-If you don't, `cuts` is free software and it is hosted on github,
+If you like `cuts` (the c++ one), please send me an email via
+44244401+TTWNO@users.noreply.github.com
+
+If you don't, `cuts` (invluding the original perl script) is free
+oftware and it is hosted on github,
 so consider forking, and fixing it.  If you don't know how to code,
 and feel that I should fix it, please email anyway, or open an
 "issue" on github.  Any comment, good a bad, is highly appreciated.
