@@ -33,8 +33,8 @@
 
 # http://www.gnu.org/software/automake
 
-Makefile.in
 Makefile
+Makefile.in
 /ar-lib
 /mdate-sh
 /py-compile
