@@ -584,8 +584,12 @@ This introduces an ambiguity: are these arguments files or column numbers?
 
 #### Test suite
 
-Simply run make check to create and run the tests.
+Simply run `make check` to create and run the tests.
 to run the tests with more options cd to test, then run `./tests_main.out` (or whatever the output name is).
+
+I am using <a href="https://github.com/catchorg/Catch2">Catch2</a> as a testing library.
+See their documentation for various flags. `-s` gives much more detailed information even when your tests
+doesn't fail.
 
 #### Historical perspective
 
